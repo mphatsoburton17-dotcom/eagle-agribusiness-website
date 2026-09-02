@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products & Pricing | Eagle Agribusiness & Extension Services</title>
+<meta name="description" content="Eagle Mbeya Fertiliser, ready-to-transplant seedlings and manure prices from Eagle Agribusiness & Extension Services.">
+<link rel="icon" href="images/logo.png">
+<link rel="stylesheet" href="style.css">
+<script src="reveal.js"></script>
+<style>
+  .product-card {
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:14px; border:1px solid var(--line); border-radius:var(--radius);
+    margin-bottom:10px; background:#fff; box-shadow:var(--shadow);
+    cursor:pointer; text-align:left; width:100%; font-family:inherit;
+  }
+  .product-card:hover { border-color: var(--green-primary); }
+  .product-card .pc-photo { width:56px; height:56px; border-radius:10px; object-fit:cover; flex-shrink:0; }
+  .product-card .pc-main { display:flex; align-items:center; gap:12px; flex:1; min-width:0; }
+  .product-card .pc-text { min-width:0; }
+  .product-card .pc-name { font-weight:700; color:var(--ink); font-size:0.95rem; margin-bottom:2px; }
+  .product-card .pc-desc { font-size:0.8rem; color:var(--ink-soft); }
+  .product-card .pc-price { color:var(--green-dark); font-weight:800; font-size:0.95rem; white-space:nowrap; margin-left:10px; }
+  .product-card .pc-buy { font-size:0.7rem; color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:0.04em; margin-top:4px; }
+  .cat-group { margin-bottom: 26px; }
+  .loading-note { font-size:0.85rem; color:var(--ink-soft); }
+
+  /* photo gallery */
+  .gallery-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; }
+  .gallery-grid a { display:block; border-radius:10px; overflow:hidden; aspect-ratio:1/1; }
+  .gallery-grid img { width:100%; height:100%; object-fit:cover; display:block; transition: transform 0.2s; }
+  .gallery-grid a:hover img { transform: scale(1.05); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;">
+      <img src="images/logo.png" class="logo" alt="Eagle Agribusiness logo">
+      <span class="brand">Eagle Agribusiness<small>&amp; Extension Services</small></span>
+    </a>
+    <nav class="top-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="products.html" class="active">Products &amp; Pricing</a>
+      <a href="branches.html">Branches</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero page-hero">
+  <img src="images/hero-fert.jpg" class="hero-photo" alt="Eagle Mbeya Fertiliser bags">
+  <div class="hero-copy">
+    <h1>Products &amp; Pricing</h1>
+    <p>Tap any product to order it on WhatsApp</p>
+  </div>
+</div>
+<div class="field-row"></div>
+
+<main>
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">How ordering works</span>
+      <p class="loading-note" style="margin-bottom:20px;">Tap a product below — it opens WhatsApp with a message already filled in, so you can confirm quantity and delivery directly with us.</p>
+      <div id="productsRoot">
+        <p class="loading-note">Loading products…</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <span class="eyebrow">From our fields</span>
+      <h2>See what we grow &amp; supply</h2>
+      <p style="font-size:0.86rem;">Real photos from our seedling beds and fertiliser stock — tap any photo to view it full-size.</p>
+      <div class="gallery-grid reveal">
+        <a href="images/products/tomato-select.jpg" target="_blank" rel="noopener"><img src="images/products/tomato-select.jpg" alt="Tomato Tengeru Select seedlings" loading="lazy"></a>
+        <a href="images/products/tomato-nyanya.jpg" target="_blank" rel="noopener"><img src="images/products/tomato-nyanya.jpg" alt="Tomato Tengeru Nyanya field" loading="lazy"></a>
+        <a href="images/products/cabbage-field-1.jpg" target="_blank" rel="noopener"><img src="images/products/cabbage-field-1.jpg" alt="Cabbage field" loading="lazy"></a>
+        <a href="images/products/cabbage-field-2.jpg" target="_blank" rel="noopener"><img src="images/products/cabbage-field-2.jpg" alt="Cabbage seedlings close up" loading="lazy"></a>
+        <a href="images/products/lettuce-field.jpg" target="_blank" rel="noopener"><img src="images/products/lettuce-field.jpg" alt="Lettuce field" loading="lazy"></a>
+        <a href="images/products/fert-bags-stack.jpg" target="_blank" rel="noopener"><img src="images/products/fert-bags-stack.jpg" alt="Eagle Mbeya Fertiliser bags stacked" loading="lazy"></a>
+        <a href="images/products/fert-bags-50kg.jpg" target="_blank" rel="noopener"><img src="images/products/fert-bags-50kg.jpg" alt="Eagle Mbeya Fertiliser 50kg bags" loading="lazy"></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Prefer to call?</span>
+      <h2>We're one call away too</h2>
+      <div class="btn-row">
+        <a class="btn btn-primary pulse" href="https://wa.me/265998893893" target="_blank" rel="noopener">💬 Message us on WhatsApp</a>
+        <a class="btn btn-outline dark" href="tel:+265998893893">📞 Call 0998 89 38 93</a>
+      </div>
+      <div class="trust-ribbon reveal">MUSADZATI SITINAKUUZENI — buy only through our official numbers.</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="brand-line">Eagle Agribusiness &amp; Extension Services</div>
+  <div>Your Trusted Partner in Agricultural Products</div>
+  <div style="margin-top:10px;">0998 89 38 93 · eagleinvestment23@gmail.com · Lilongwe, Malawi</div>
+</footer>
+
+<nav class="tab-bar">
+  <a href="index.html"><span class="tab-icon">🏠</span>Home</a>
+  <a href="about.html"><span class="tab-icon">ℹ️</span>About</a>
+  <a href="products.html" class="active"><span class="tab-icon">🌾</span>Products</a>
+  <a href="branches.html"><span class="tab-icon">📍</span>Branches</a>
+  <a href="contact.html"><span class="tab-icon">☎️</span>Contact</a>
+</nav>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" onerror="window.EAGLE_SDK_FAILED = true;"></script>
+<script>
+const WHATSAPP_NUMBER = '265998893893';
+
+// Static fallback — used only if Supabase isn't configured yet,
+// so the page never shows blank while the admin backend is being set up.
+const FALLBACK_PRODUCTS = [
+  { name: 'Eagle Mbeya Fertiliser 50kg — Lilongwe', category: 'Fertiliser', price_label: 'K72,500', description: '', image_url: 'images/products/fert-bags-50kg.jpg' },
+  { name: 'Eagle Mbeya Fertiliser 25kg — Lilongwe', category: 'Fertiliser', price_label: 'K38,500', description: '', image_url: 'images/products/fert-bags-stack.jpg' },
+  { name: 'Eagle Mbeya Fertiliser 50kg — Blantyre & Mzuzu', category: 'Fertiliser', price_label: 'K80,000', description: '', image_url: 'images/products/fert-bags-50kg.jpg' },
+  { name: 'Eagle Mbeya Fertiliser 25kg — Blantyre & Mzuzu', category: 'Fertiliser', price_label: 'K42,500', description: '', image_url: 'images/products/fert-bags-stack.jpg' },
+  { name: 'Tomato Seedling (Tengeru Select)', category: 'Seedlings', price_label: 'K50 each', description: '', image_url: 'images/products/tomato-select.jpg' },
+  { name: 'Tomato Seedling (Tengeru Nyanya)', category: 'Seedlings', price_label: 'K30 each', description: '', image_url: 'images/products/tomato-nyanya.jpg' },
+  { name: 'Onion Seedling (Red Creole)', category: 'Seedlings', price_label: 'K20 each', description: '', image_url: null },
+  { name: 'Cabbage Seedling (Star 3317)', category: 'Seedlings', price_label: 'K60 each', description: '', image_url: 'images/products/cabbage-field-1.jpg' },
+  { name: 'Lettuce Seedling', category: 'Seedlings', price_label: 'K100 each', description: '', image_url: 'images/products/lettuce-field.jpg' },
+  { name: 'Green Pepper Seedling', category: 'Seedlings', price_label: 'K150 each', description: '', image_url: null },
+  { name: 'Eggplant Seedling', category: 'Seedlings', price_label: 'K150 each', description: '', image_url: null },
+  { name: 'Manure (per bag)', category: 'Manure', price_label: 'Ask for current price', description: '', image_url: null },
+];
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+
+function buyLink(p) {
+  const text = `Hello Eagle Agribusiness, I'm interested in ${p.name} – ${p.price_label}. How many should I order?`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+}
+
+function render(products) {
+  const root = document.getElementById('productsRoot');
+  if (!products.length) {
+    root.innerHTML = '<p class="loading-note">No products listed right now — please check back soon, or contact us directly.</p>';
+    return;
+  }
+  const categories = [...new Set(products.map(p => p.category))];
+  root.innerHTML = categories.map(cat => `
+    <div class="cat-group reveal">
+      <h2>${escapeHtml(cat)}</h2>
+      ${products.filter(p => p.category === cat).map(p => `
+        <a class="product-card" href="${buyLink(p)}" target="_blank" rel="noopener">
+          <div class="pc-main">
+            ${p.image_url ? `<img class="pc-photo" src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" loading="lazy">` : ''}
+            <div class="pc-text">
+              <div class="pc-name">${escapeHtml(p.name)}</div>
+              ${p.description ? `<div class="pc-desc">${escapeHtml(p.description)}</div>` : ''}
+              <div class="pc-buy">Tap to order on WhatsApp →</div>
+            </div>
+          </div>
+          <div class="pc-price">${escapeHtml(p.price_label)}</div>
+        </a>
+      `).join('')}
+    </div>
+  `).join('');
+  if (window.eagleReveal) window.eagleReveal.refresh();
+}
+
+async function loadProducts() {
+  // Everything below is wrapped in try/catch on purpose: if the database
+  // isn't configured yet, the CDN is blocked, or there's no internet,
+  // the page still shows the fallback price list instead of hanging.
+  try {
+    const cfg = window.EAGLE_CONFIG;
+    if (window.EAGLE_SDK_FAILED || !cfg || !cfg.SUPABASE_URL || cfg.SUPABASE_URL.includes('YOUR_SUPABASE')) {
+      throw new Error('not configured');
+    }
+    if (!window.supabase || !window.supabase.createClient) throw new Error('sdk not loaded');
+    const client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+    const { data, error } = await client.from('products').select('*').eq('active', true).order('category').order('sort_order');
+    if (error || !data || !data.length) throw error || new Error('no data');
+    render(data);
+  } catch (e) {
+    render(FALLBACK_PRODUCTS);
+  }
+}
+
+// Give the CDN script a brief moment to load, then attempt — falls back
+// immediately if it errors, or after a short timeout if it never responds.
+window.addEventListener('load', () => setTimeout(loadProducts, 150));
+
+</script>
+
+</body>
+</html>

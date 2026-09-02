@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us | Eagle Agribusiness & Extension Services</title>
+<meta name="description" content="Meet Eagle Agribusiness & Extension Services — led by CEO & Founder Mr Titus Chiwindo, providing alternative farming solutions to Malawian farmers.">
+<link rel="icon" href="images/logo.png">
+<link rel="stylesheet" href="style.css">
+<script src="reveal.js"></script>
+<style>
+  .team-grid { display:grid; grid-template-columns: 1fr; gap:14px; }
+  @media (min-width: 560px) { .team-grid { grid-template-columns: 1fr 1fr; } }
+  .team-card { display:flex; align-items:center; gap:14px; padding:16px; border:1px solid var(--line); border-radius:var(--radius); background:#fff; box-shadow:var(--shadow); }
+  .team-card .team-photo { width:56px; height:56px; border-radius:50%; object-fit:cover; flex-shrink:0; background:var(--green-light); }
+  .team-card .team-photo-fallback { width:56px; height:56px; border-radius:50%; background:var(--green-light); color:var(--green-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem; flex-shrink:0; }
+  .team-card .team-name { font-weight:700; color:var(--ink); font-size:0.95rem; margin-bottom:1px; }
+  .team-card .team-role { font-size:0.78rem; color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:0.03em; margin-bottom:4px; }
+  .team-card .team-bio { font-size:0.82rem; color:var(--ink-soft); margin:0; }
+  .loading-note { font-size:0.85rem; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;">
+      <img src="images/logo.png" class="logo" alt="Eagle Agribusiness logo">
+      <span class="brand">Eagle Agribusiness<small>&amp; Extension Services</small></span>
+    </a>
+    <nav class="top-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="products.html">Products &amp; Pricing</a>
+      <a href="branches.html">Branches</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero page-hero">
+  <img src="images/farmer-scene.jpg" class="hero-photo" alt="Farmer using Eagle Agribusiness services">
+  <div class="hero-copy">
+    <h1>About Us</h1>
+    <p>Your trusted partner in agricultural products</p>
+  </div>
+</div>
+<div class="field-row"></div>
+
+<main>
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Who we are</span>
+      <h2>Built for Malawian farmers</h2>
+      <p>Eagle Agribusiness &amp; Extension Services is a Malawian agricultural inputs and extension company founded and led by <strong>Mr Titus Chiwindo, CEO &amp; Founder</strong>. We are a trusted partner to farmers across Lilongwe, Blantyre and Mzuzu, supplying quality manure, fertiliser, and ready-to-transplant seedlings — while promoting improved productivity, food security, and better livelihoods for farming communities.</p>
+      <p>Operating under the wider Eagle Investment brand, we run a growing network of official selling points across the Central and Southern regions, making agricultural inputs accessible and affordable to smallholder and commercial farmers alike. Our Facebook community has grown to over <strong>21,000 followers</strong> — farmers who trust us for honest advice and reliable products.</p>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <span class="eyebrow">Our mission</span>
+      <h2>Why we do this</h2>
+      <div class="card reveal">
+        <p style="margin-bottom:0;">To provide alternative farming solutions to farmers and create value in traditional farming through reliable access to quality agricultural inputs, extension knowledge, and dependable customer service.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">What we stand for</span>
+      <h2>Our values</h2>
+      <div class="offer-grid">
+        <div class="offer-card reveal">
+          <div class="icon">🤝</div>
+          <h3>Trust</h3>
+          <p>We deal directly and transparently with every farmer — no middlemen, no impersonators.</p>
+        </div>
+        <div class="offer-card reveal">
+          <div class="icon">✅</div>
+          <h3>Quality</h3>
+          <p>Only tested, reliable fertiliser and seedling varieties suited to Malawian conditions.</p>
+        </div>
+        <div class="offer-card reveal">
+          <div class="icon">📍</div>
+          <h3>Accessibility</h3>
+          <p>A wide network of selling points brings inputs closer to farmers, urban and rural alike.</p>
+        </div>
+        <div class="offer-card reveal">
+          <div class="icon">📚</div>
+          <h3>Farmer empowerment</h3>
+          <p>Beyond selling products, we share knowledge that helps farmers improve their yields.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <span class="eyebrow">Leadership &amp; team</span>
+      <h2>Meet the people behind Eagle</h2>
+      <div id="teamRoot">
+        <p class="loading-note">Loading team…</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">What farmers say</span>
+      <h2>Testimonials</h2>
+      <div class="testi-carousel" id="testiCarousel">
+        <p class="loading-note">Loading testimonials…</p>
+      </div>
+      <div class="testi-dots" id="testiDots"></div>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <span class="eyebrow">Working together</span>
+      <h2>Our partners</h2>
+      <div id="partnerRoot">
+        <p class="loading-note">Loading partners…</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="trust-ribbon reveal">MUSADZATI SITINAKUUZENI — buy only through our official numbers.</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="brand-line">Eagle Agribusiness &amp; Extension Services</div>
+  <div>Your Trusted Partner in Agricultural Products</div>
+  <div style="margin-top:10px;">0998 89 38 93 · eagleinvestment23@gmail.com · Lilongwe, Malawi</div>
+</footer>
+
+<nav class="tab-bar">
+  <a href="index.html"><span class="tab-icon">🏠</span>Home</a>
+  <a href="about.html" class="active"><span class="tab-icon">ℹ️</span>About</a>
+  <a href="products.html"><span class="tab-icon">🌾</span>Products</a>
+  <a href="branches.html"><span class="tab-icon">📍</span>Branches</a>
+  <a href="contact.html"><span class="tab-icon">☎️</span>Contact</a>
+</nav>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" onerror="window.EAGLE_SDK_FAILED = true;"></script>
+<script>
+// Fallback team list — shown if the database isn't connected yet, so this
+// page never looks broken. Titus can override all of this from the admin
+// panel once Supabase is set up (see ADMIN_SETUP_GUIDE.md).
+var FALLBACK_TEAM = [
+  { name: 'Mr Titus Chiwindo', role: 'CEO & Founder', bio: 'Founder and Chief Executive Officer of Eagle Agribusiness & Extension Services.', image_url: null },
+  { name: 'Operations Department', role: 'Department', bio: 'Oversees day-to-day running of all selling points and stock availability.', image_url: null },
+  { name: 'Sales & Marketing Department', role: 'Department', bio: 'Manages customer relationships, promotions, and the branch network.', image_url: null },
+  { name: 'Agricultural Extension Department', role: 'Department', bio: 'Provides farming advice and product guidance to customers.', image_url: null },
+  { name: 'Logistics & Distribution Department', role: 'Department', bio: 'Coordinates deliveries and supply across Lilongwe, Blantyre, and Mzuzu.', image_url: null }
+];
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, function (c) {
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
+}
+
+function initials(name) {
+  return String(name || '').trim().split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
+}
+
+function renderTeam(members) {
+  var root = document.getElementById('teamRoot');
+  if (!members.length) {
+    root.innerHTML = '<p class="loading-note">Team information coming soon.</p>';
+    return;
+  }
+  root.innerHTML = '<div class="team-grid">' + members.map(function (m) {
+    var photo = m.image_url
+      ? '<img class="team-photo" src="' + escapeHtml(m.image_url) + '" alt="' + escapeHtml(m.name) + '">'
+      : '<div class="team-photo-fallback">' + escapeHtml(initials(m.name)) + '</div>';
+    return '' +
+      '<div class="team-card reveal">' +
+        photo +
+        '<div>' +
+          '<div class="team-name">' + escapeHtml(m.name) + '</div>' +
+          '<div class="team-role">' + escapeHtml(m.role) + '</div>' +
+          (m.bio ? '<p class="team-bio">' + escapeHtml(m.bio) + '</p>' : '') +
+        '</div>' +
+      '</div>';
+  }).join('') + '</div>';
+  if (window.eagleReveal) window.eagleReveal.refresh();
+}
+
+async function loadTeam() {
+  try {
+    var cfg = window.EAGLE_CONFIG;
+    if (window.EAGLE_SDK_FAILED || !cfg || !cfg.SUPABASE_URL || cfg.SUPABASE_URL.indexOf('YOUR_SUPABASE') !== -1) {
+      throw new Error('not configured');
+    }
+    if (!window.supabase || !window.supabase.createClient) throw new Error('sdk not loaded');
+    var client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+    var result = await client.from('team_members').select('*').eq('active', true).order('sort_order');
+    if (result.error || !result.data || !result.data.length) throw result.error || new Error('no data');
+    renderTeam(result.data);
+  } catch (e) {
+    renderTeam(FALLBACK_TEAM);
+  }
+}
+
+// ---- Testimonials (animated carousel) ----
+var FALLBACK_TESTIMONIALS = [
+  { customer_name: 'A happy farmer', location: 'Lilongwe', message: 'Real customer testimonials will appear here once added from the admin panel.', image_url: null },
+];
+var testiTimer = null;
+var testiIndex = 0;
+
+function renderTestimonials(items) {
+  var carousel = document.getElementById('testiCarousel');
+  var dotsEl = document.getElementById('testiDots');
+  if (!items.length) {
+    carousel.innerHTML = '<p class="loading-note">No testimonials yet.</p>';
+    dotsEl.innerHTML = '';
+    return;
+  }
+  carousel.innerHTML = items.map(function (t, i) {
+    var avatar = t.image_url
+      ? '<img class="testi-avatar" src="' + escapeHtml(t.image_url) + '" alt="' + escapeHtml(t.customer_name) + '">'
+      : '<div class="testi-avatar-fallback">' + escapeHtml(initials(t.customer_name)) + '</div>';
+    return '' +
+      '<div class="testi-slide' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">' +
+        '<div class="testi-card">' +
+          '<div class="testi-quote">&ldquo;</div>' +
+          '<p class="testi-message">' + escapeHtml(t.message) + '</p>' +
+          avatar +
+          '<div class="testi-name">' + escapeHtml(t.customer_name) + '</div>' +
+          (t.location ? '<div class="testi-location">' + escapeHtml(t.location) + '</div>' : '') +
+        '</div>' +
+      '</div>';
+  }).join('');
+
+  dotsEl.innerHTML = items.map(function (_, i) {
+    return '<span' + (i === 0 ? ' class="active"' : '') + ' data-i="' + i + '"></span>';
+  }).join('');
+
+  Array.prototype.forEach.call(dotsEl.querySelectorAll('span'), function (dot) {
+    dot.addEventListener('click', function () { showTestimonial(parseInt(dot.dataset.i, 10)); resetTestiTimer(items.length); });
+  });
+
+  testiIndex = 0;
+  if (items.length > 1) startTestiTimer(items.length);
+}
+
+function showTestimonial(i) {
+  var slides = document.querySelectorAll('.testi-slide');
+  var dots = document.querySelectorAll('#testiDots span');
+  Array.prototype.forEach.call(slides, function (s) { s.classList.remove('active'); });
+  Array.prototype.forEach.call(dots, function (d) { d.classList.remove('active'); });
+  if (slides[i]) slides[i].classList.add('active');
+  if (dots[i]) dots[i].classList.add('active');
+  testiIndex = i;
+}
+
+function startTestiTimer(count) {
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
+  testiTimer = setInterval(function () {
+    showTestimonial((testiIndex + 1) % count);
+  }, 5000);
+}
+
+function resetTestiTimer(count) {
+  if (testiTimer) clearInterval(testiTimer);
+  startTestiTimer(count);
+}
+
+async function loadTestimonials() {
+  try {
+    var cfg = window.EAGLE_CONFIG;
+    if (window.EAGLE_SDK_FAILED || !cfg || !cfg.SUPABASE_URL || cfg.SUPABASE_URL.indexOf('YOUR_SUPABASE') !== -1) {
+      throw new Error('not configured');
+    }
+    if (!window.supabase || !window.supabase.createClient) throw new Error('sdk not loaded');
+    var client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+    var result = await client.from('testimonials').select('*').eq('active', true).order('sort_order');
+    if (result.error || !result.data || !result.data.length) throw result.error || new Error('no data');
+    renderTestimonials(result.data);
+  } catch (e) {
+    renderTestimonials(FALLBACK_TESTIMONIALS);
+  }
+}
+
+// ---- Partners (scrolling logo strip) ----
+function renderPartners(items) {
+  var root = document.getElementById('partnerRoot');
+  if (!items.length) {
+    root.innerHTML = '<p class="loading-note">Partner information coming soon.</p>';
+    return;
+  }
+  // Duplicate the list so the CSS animation can loop seamlessly (scrolls
+  // exactly 50% of the track width, then resets unnoticeably).
+  var doubled = items.concat(items);
+  root.innerHTML = '<div class="partner-strip"><div class="partner-track">' +
+    doubled.map(function (p) {
+      var inner = p.logo_url
+        ? '<img src="' + escapeHtml(p.logo_url) + '" alt="' + escapeHtml(p.name) + '">'
+        : '<span class="partner-name-badge">' + escapeHtml(p.name) + '</span>';
+      return p.website_url
+        ? '<a href="' + escapeHtml(p.website_url) + '" target="_blank" rel="noopener">' + inner + '</a>'
+        : inner;
+    }).join('') +
+  '</div></div>';
+}
+
+async function loadPartners() {
+  try {
+    var cfg = window.EAGLE_CONFIG;
+    if (window.EAGLE_SDK_FAILED || !cfg || !cfg.SUPABASE_URL || cfg.SUPABASE_URL.indexOf('YOUR_SUPABASE') !== -1) {
+      throw new Error('not configured');
+    }
+    if (!window.supabase || !window.supabase.createClient) throw new Error('sdk not loaded');
+    var client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+    var result = await client.from('partners').select('*').eq('active', true).order('sort_order');
+    if (result.error || !result.data || !result.data.length) throw result.error || new Error('no data');
+    renderPartners(result.data);
+  } catch (e) {
+    document.getElementById('partnerRoot').innerHTML = '<p class="loading-note">Partner logos will appear here once added from the admin panel.</p>';
+  }
+}
+
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    loadTeam();
+    loadTestimonials();
+    loadPartners();
+  }, 150);
+});
+</script>
+
+</body>
+</html>

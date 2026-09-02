@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | Eagle Agribusiness & Extension Services</title>
+<meta name="description" content="Contact Eagle Agribusiness & Extension Services via WhatsApp, phone, or email.">
+<link rel="icon" href="images/logo.png">
+<link rel="stylesheet" href="style.css">
+<script src="reveal.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;">
+      <img src="images/logo.png" class="logo" alt="Eagle Agribusiness logo">
+      <span class="brand">Eagle Agribusiness<small>&amp; Extension Services</small></span>
+    </a>
+    <nav class="top-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="products.html">Products &amp; Pricing</a>
+      <a href="branches.html">Branches</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero page-hero">
+  <img src="images/farmer-scene.jpg" class="hero-photo" alt="Contact Eagle Agribusiness">
+  <div class="hero-copy">
+    <h1>Contact Us</h1>
+    <p>We're one call or message away</p>
+  </div>
+</div>
+<div class="field-row"></div>
+
+<main>
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Get in touch</span>
+      <h2>Reach our official line</h2>
+
+      <a class="contact-card reveal" href="https://wa.me/265998893893" target="_blank" rel="noopener">
+        <div class="ci-icon">💬</div>
+        <div><div class="ci-label">WhatsApp</div><div class="ci-value">+265 998 89 38 93</div></div>
+      </a>
+      <a class="contact-card reveal" href="tel:+265998893893">
+        <div class="ci-icon">📞</div>
+        <div><div class="ci-label">Call</div><div class="ci-value">0998 89 38 93</div></div>
+      </a>
+      <a class="contact-card reveal" href="mailto:eagleinvestment23@gmail.com">
+        <div class="ci-icon">✉️</div>
+        <div><div class="ci-label">Email</div><div class="ci-value">eagleinvestment23@gmail.com</div></div>
+      </a>
+      <a class="contact-card reveal" href="https://facebook.com" target="_blank" rel="noopener">
+        <div class="ci-icon">📘</div>
+        <div><div class="ci-label">Facebook</div><div class="ci-value">Eagle Agribusiness &amp; Extension Services</div></div>
+      </a>
+      <div class="contact-card reveal">
+        <div class="ci-icon">📍</div>
+        <div><div class="ci-label">Location</div><div class="ci-value">Lilongwe, Malawi</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <span class="eyebrow">Send us a message</span>
+      <h2>Quick order / enquiry form</h2>
+      <p style="font-size:0.86rem;">This form opens a pre-filled WhatsApp message to our official line — nothing is stored on this site.</p>
+      <form id="quickForm" class="card" onsubmit="return sendToWhatsApp(event)">
+        <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:6px;">Your name</label>
+        <input id="qName" type="text" required style="width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; margin-bottom:14px; font-family:inherit; font-size:0.95rem;">
+
+        <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:6px;">What do you need? (e.g. 2x 50kg fertiliser, tomato seedlings)</label>
+        <textarea id="qMsg" required rows="3" style="width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; margin-bottom:14px; font-family:inherit; font-size:0.95rem;"></textarea>
+
+        <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:6px;">Your branch / area</label>
+        <input id="qArea" type="text" placeholder="e.g. Area 49, Lilongwe" style="width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; margin-bottom:16px; font-family:inherit; font-size:0.95rem;">
+
+        <button type="submit" class="btn btn-primary pulse" style="width:100%; justify-content:center; border:none;">💬 Send via WhatsApp</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="trust-ribbon reveal">MUSADZATI SITINAKUUZENI — buy only through our official numbers listed on this page.</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="brand-line">Eagle Agribusiness &amp; Extension Services</div>
+  <div>Your Trusted Partner in Agricultural Products</div>
+  <div style="margin-top:10px;">0998 89 38 93 · eagleinvestment23@gmail.com · Lilongwe, Malawi</div>
+</footer>
+
+<nav class="tab-bar">
+  <a href="index.html"><span class="tab-icon">🏠</span>Home</a>
+  <a href="about.html"><span class="tab-icon">ℹ️</span>About</a>
+  <a href="products.html"><span class="tab-icon">🌾</span>Products</a>
+  <a href="branches.html"><span class="tab-icon">📍</span>Branches</a>
+  <a href="contact.html" class="active"><span class="tab-icon">☎️</span>Contact</a>
+</nav>
+
+<script>
+function sendToWhatsApp(e) {
+  e.preventDefault();
+  const name = document.getElementById('qName').value.trim();
+  const msg = document.getElementById('qMsg').value.trim();
+  const area = document.getElementById('qArea').value.trim();
+  let text = `Hello Eagle Agribusiness, my name is ${name}.\nI need: ${msg}`;
+  if (area) text += `\nMy area/branch: ${area}`;
+  const url = `https://wa.me/265998893893?text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank');
+  return false;
+}
+</script>
+
+</body>
+</html>

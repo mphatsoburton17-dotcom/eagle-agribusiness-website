@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log a Sale | Eagle Agribusiness</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="images/logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  .form-wrap { max-width: 560px; margin: 0 auto; padding: 24px 20px 60px; }
+  .field { margin-bottom: 14px; }
+  .field label { display:block; font-weight:700; font-size:0.85rem; margin-bottom:6px; color: var(--ink); }
+  .field input, .field select, .field textarea {
+    width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:8px;
+    font-family: inherit; font-size:0.95rem; background:#fff;
+  }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .form-card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); }
+  .status-msg { font-size:0.9rem; padding:12px 14px; border-radius:8px; margin-bottom:14px; display:none; }
+  .status-msg.show { display:block; }
+  .status-ok { background: var(--green-light); color: var(--green-dark); }
+  .status-err { background: #FBEAEA; color: #B33A3A; }
+  /* honeypot - hidden from real users, catches simple spam bots */
+  .hp { position:absolute; left:-9999px; opacity:0; height:0; overflow:hidden; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;">
+      <img src="images/logo.png" class="logo" alt="Eagle Agribusiness logo">
+      <span class="brand">Eagle Agribusiness<small>Log a Sale</small></span>
+    </a>
+  </div>
+</header>
+
+<div class="form-wrap">
+  <h1 style="margin-top:20px;">Log a Customer Purchase</h1>
+  <p>Fill this in whenever a customer buys from your branch — head office will follow up with them automatically at the right time. No login needed.</p>
+
+  <div id="formStatus" class="status-msg status-ok"></div>
+
+  <div class="form-card">
+    <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off">
+
+    <div class="field">
+      <label for="cName">Customer name</label>
+      <input id="cName" type="text" placeholder="e.g. Grace Banda">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="cPhone">Phone number</label>
+        <input id="cPhone" type="tel" placeholder="e.g. 0991234567">
+      </div>
+      <div class="field">
+        <label for="cEmail">Email (optional)</label>
+        <input id="cEmail" type="email" placeholder="optional">
+      </div>
+    </div>
+    <div class="field">
+      <label for="cLocation">Location / area</label>
+      <input id="cLocation" type="text" placeholder="e.g. Area 49, Lilongwe">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="cProductType">Product type</label>
+        <select id="cProductType">
+          <option>Fertiliser</option>
+          <option>Seedlings</option>
+          <option>Manure</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="cQuantity">Quantity</label>
+        <input id="cQuantity" type="text" placeholder="e.g. 2 bags, 50 seedlings">
+      </div>
+    </div>
+    <div class="field">
+      <label for="cDetail">Product detail (optional)</label>
+      <input id="cDetail" type="text" placeholder="e.g. Tomato Tengeru Select, 50kg Eagle Mbeya">
+    </div>
+    <div class="field">
+      <label for="cDate">Purchase date</label>
+      <input id="cDate" type="date">
+    </div>
+    <div class="field">
+      <label for="cBranch">Your branch / name</label>
+      <input id="cBranch" type="text" placeholder="e.g. Area 49 branch, or your name">
+    </div>
+    <div class="field">
+      <label for="cNotes">Notes (optional)</label>
+      <textarea id="cNotes" rows="2" placeholder="Anything worth remembering about this customer"></textarea>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%; justify-content:center; border:none;" id="submitBtn">Log This Sale</button>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" onerror="window.EAGLE_SDK_FAILED = true;"></script>
+<script>
+document.getElementById('cDate').valueAsDate = new Date();
+
+function showStatus(msg, ok) {
+  var el = document.getElementById('formStatus');
+  el.textContent = msg;
+  el.className = 'status-msg show ' + (ok ? 'status-ok' : 'status-err');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('submitBtn').addEventListener('click', async function () {
+    // Honeypot check - if this hidden field got filled in, silently ignore (bot).
+    if (document.querySelector('.hp').value) return;
+
+    var cfg = window.EAGLE_CONFIG;
+    if (window.EAGLE_SDK_FAILED || !cfg || !cfg.SUPABASE_URL || cfg.SUPABASE_URL.indexOf('YOUR_SUPABASE') !== -1) {
+      showStatus('This form is not connected to the database yet. Please contact head office.', false);
+      return;
+    }
+    var name = document.getElementById('cName').value.trim();
+    var productType = document.getElementById('cProductType').value;
+    var purchaseDate = document.getElementById('cDate').value;
+    if (!name || !purchaseDate) {
+      showStatus('Please enter at least the customer name and purchase date.', false);
+      return;
+    }
+
+    var record = {
+      customer_name: name,
+      phone: document.getElementById('cPhone').value.trim(),
+      email: document.getElementById('cEmail').value.trim(),
+      location: document.getElementById('cLocation').value.trim(),
+      product_type: productType,
+      product_detail: document.getElementById('cDetail').value.trim(),
+      quantity: document.getElementById('cQuantity').value.trim(),
+      purchase_date: purchaseDate,
+      submitted_by: document.getElementById('cBranch').value.trim(),
+      notes: document.getElementById('cNotes').value.trim()
+    };
+
+    try {
+      var client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+      var result = await client.from('customers').insert(record);
+      if (result.error) throw result.error;
+      showStatus('Saved! Thank you — this customer will be followed up automatically.', true);
+      ['cName','cPhone','cEmail','cLocation','cDetail','cQuantity','cNotes'].forEach(function (id) {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('cDate').valueAsDate = new Date();
+    } catch (e) {
+      showStatus('Could not save: ' + e.message, false);
+    }
+  });
+});
+</script>
+
+</body>
+</html>

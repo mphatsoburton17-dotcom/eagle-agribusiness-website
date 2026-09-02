@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin | Eagle Agribusiness & Extension Services</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="images/logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  .admin-wrap { max-width: 640px; margin: 0 auto; padding: 24px 20px 60px; }
+  .field { margin-bottom: 14px; }
+  .field label { display:block; font-weight:700; font-size:0.85rem; margin-bottom:6px; color: var(--ink); }
+  .field input, .field select, .field textarea {
+    width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:8px;
+    font-family: inherit; font-size:0.95rem; background:#fff;
+  }
+  .field textarea { resize: vertical; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .admin-card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); margin-bottom:16px; }
+  .product-row { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .product-row:last-child { border-bottom:none; }
+  .product-row .pinfo { flex:1; }
+  .product-row .pname { font-weight:700; font-size:0.92rem; color:var(--ink); }
+  .product-row .pmeta { font-size:0.78rem; color:var(--ink-soft); }
+  .pactions { display:flex; gap:8px; }
+  .pactions button { border:none; border-radius:8px; padding:7px 11px; font-size:0.78rem; font-weight:700; cursor:pointer; }
+  .btn-edit { background: var(--green-light); color: var(--green-dark); }
+  .btn-del { background: #FBEAEA; color: #B33A3A; }
+  .status-msg { font-size:0.85rem; padding:10px 12px; border-radius:8px; margin-bottom:14px; display:none; }
+  .status-msg.show { display:block; }
+  .status-ok { background: var(--green-light); color: var(--green-dark); }
+  .status-err { background: #FBEAEA; color: #B33A3A; }
+  #gateView { display:block; }
+  #loginView, #dashView { display:none; }
+  .inactive-tag { font-size:0.68rem; background:#eee; color:#777; padding:2px 8px; border-radius:999px; margin-left:8px; }
+  .logout-link { font-size:0.82rem; color: var(--ink-soft); text-decoration: underline; cursor:pointer; }
+  .admin-tabs { display:flex; gap:8px; margin:16px 0; }
+  .admin-tab { flex:1; padding:10px; border-radius:10px; border:1px solid var(--line); background:#fff; color:var(--ink-soft); font-weight:700; font-size:0.85rem; cursor:pointer; }
+  .admin-tab.active { background: var(--green-dark); color:#fff; border-color: var(--green-dark); }
+  .due-item { padding:14px; border:1px solid var(--line); border-radius:var(--radius); margin-bottom:10px; background:#FFF9EC; border-left:4px solid var(--gold); }
+  .due-item .due-name { font-weight:700; color:var(--ink); font-size:0.95rem; }
+  .due-item .due-meta { font-size:0.8rem; color:var(--ink-soft); margin:2px 0 10px; }
+  .due-item .due-actions { display:flex; flex-wrap:wrap; gap:8px; }
+  .due-item .due-actions a, .due-item .due-actions button {
+    font-size:0.78rem; font-weight:700; padding:7px 12px; border-radius:8px; border:none; cursor:pointer; text-decoration:none;
+  }
+  .chan-wa { background:#25D366; color:#fff; }
+  .chan-sms { background:var(--green-light); color:var(--green-dark); }
+  .chan-email { background:var(--green-light); color:var(--green-dark); }
+  .chan-done { background:#eee; color:#555; }
+  .no-due { font-size:0.9rem; color:var(--ink-soft); padding:8px 0; }
+  .tpl-block { margin-bottom:14px; }
+  .tpl-block label { display:block; font-weight:700; font-size:0.85rem; margin-bottom:6px; }
+  .tpl-block textarea { width:100%; padding:10px; border:1px solid var(--line); border-radius:8px; font-family:inherit; font-size:0.9rem; }
+  .cust-row { padding:10px 0; border-bottom:1px solid var(--line); font-size:0.85rem; }
+  .cust-row:last-child { border-bottom:none; }
+  .cust-row .cr-top { display:flex; justify-content:space-between; font-weight:700; color:var(--ink); }
+  .cust-row .cr-meta { color:var(--ink-soft); margin-top:2px; }
+  .cust-row .cr-actions { margin-top:6px; display:flex; gap:8px; }
+  .cust-row .cr-actions button { font-size:0.75rem; font-weight:700; padding:5px 10px; border-radius:6px; border:none; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;">
+      <img src="images/logo.png" class="logo" alt="Eagle Agribusiness logo">
+      <span class="brand">Eagle Agribusiness<small>Admin Panel</small></span>
+    </a>
+  </div>
+</header>
+
+<div class="admin-wrap">
+
+  <!-- PASSCODE GATE (extra layer so casual visitors don't reach the login form at all) -->
+  <div id="gateView">
+    <h1 style="margin-top:20px;">Staff Access Only</h1>
+    <p>Enter the access code to continue to the admin login.</p>
+    <div id="gateStatus" class="status-msg status-err"></div>
+    <div class="admin-card">
+      <div class="field">
+        <label for="gateCode">Access code</label>
+        <div style="display:flex; gap:8px;">
+          <input id="gateCode" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Enter access code" style="flex:1;">
+          <button type="button" style="border:1px solid var(--line); background:#fff; border-radius:8px; padding:0 14px; font-size:0.8rem; font-weight:700; color:var(--ink-soft); cursor:pointer;" id="gateToggleBtn">Show</button>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%; justify-content:center; border:none;" id="gateContinueBtn">Continue</button>
+    </div>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="loginView">
+    <h1 style="margin-top:20px;">Admin Login</h1>
+    <p>Sign in to add, edit, or remove products shown on the website.</p>
+    <div id="loginStatus" class="status-msg status-err"></div>
+    <div class="admin-card">
+      <div class="field">
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" type="email" autocomplete="username" placeholder="you@eagleagribusiness.com">
+      </div>
+      <div class="field">
+        <label for="loginPass">Password</label>
+        <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••">
+      </div>
+      <button class="btn btn-primary" style="width:100%; justify-content:center; border:none;" id="loginSubmitBtn">Sign In</button>
+    </div>
+    <p style="font-size:0.8rem;">Admin accounts are created in your Supabase project (Authentication → Users) — there is no public sign-up on this page.</p>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashView">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
+      <h1 style="margin-bottom:0;">Manage Content</h1>
+      <span class="logout-link" id="logoutBtn">Sign out</span>
+    </div>
+    <p>Changes here appear on the website immediately.</p>
+
+    <div class="admin-tabs">
+      <button class="admin-tab active" id="tabBtnProducts" type="button">Products</button>
+      <button class="admin-tab" id="tabBtnTeam" type="button">Team &amp; Departments</button>
+      <button class="admin-tab" id="tabBtnCustomers" type="button">Customers</button>
+      <button class="admin-tab" id="tabBtnTestimonials" type="button">Testimonials &amp; Partners</button>
+    </div>
+
+    <div id="dashStatus" class="status-msg status-ok"></div>
+
+    <!-- PRODUCTS PANEL -->
+    <div id="productsPanel">
+      <div class="admin-card">
+        <h3 id="formTitle">Add a product</h3>
+        <input type="hidden" id="editId">
+        <div class="field">
+          <label for="pName">Product name</label>
+          <input id="pName" type="text" placeholder="e.g. Tomato Seedling (Tengeru Select)">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="pCategory">Category</label>
+            <select id="pCategory">
+              <option>Fertiliser</option>
+              <option>Seedlings</option>
+              <option>Manure</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="pPrice">Price label</label>
+            <input id="pPrice" type="text" placeholder="e.g. K50 each">
+          </div>
+        </div>
+        <div class="field">
+          <label for="pDesc">Short description (optional)</label>
+          <textarea id="pDesc" rows="2" placeholder="Shown under the product name"></textarea>
+        </div>
+        <div class="field">
+          <label for="pImage">Photo file name (optional)</label>
+          <input id="pImage" type="text" placeholder="e.g. images/products/tomato-select.jpg">
+          <div style="font-size:0.76rem; color:var(--ink-soft); margin-top:4px;">Use one of the file names already in your images/products/ folder, or paste a full https:// image link.</div>
+        </div>
+        <div class="field">
+          <label><input type="checkbox" id="pActive" checked style="width:auto; margin-right:6px;"> Visible on the website</label>
+        </div>
+        <div class="btn-row" style="margin-top:4px;">
+          <button class="btn btn-primary" style="border:none;" id="saveProductBtn">Save product</button>
+          <button class="btn btn-outline dark" style="display:none;" id="cancelEditBtn">Cancel edit</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h3>Current products</h3>
+        <div id="productList">Loading…</div>
+      </div>
+    </div>
+
+    <!-- TEAM PANEL -->
+    <div id="teamPanel" style="display:none;">
+      <div class="admin-card">
+        <h3 id="teamFormTitle">Add a team member / department</h3>
+        <input type="hidden" id="editTeamId">
+        <div class="field">
+          <label for="tName">Name</label>
+          <input id="tName" type="text" placeholder="e.g. Mr Titus Chiwindo or Sales Department">
+        </div>
+        <div class="field">
+          <label for="tRole">Role / title</label>
+          <input id="tRole" type="text" placeholder="e.g. CEO & Founder, or Department">
+        </div>
+        <div class="field">
+          <label for="tBio">Short bio / description (optional)</label>
+          <textarea id="tBio" rows="2" placeholder="A sentence about this person or department"></textarea>
+        </div>
+        <div class="field">
+          <label for="tImage">Photo file name (optional)</label>
+          <input id="tImage" type="text" placeholder="e.g. images/team/titus.jpg">
+          <div style="font-size:0.76rem; color:var(--ink-soft); margin-top:4px;">Leave blank to show initials instead of a photo.</div>
+        </div>
+        <div class="field">
+          <label><input type="checkbox" id="tActive" checked style="width:auto; margin-right:6px;"> Visible on the website</label>
+        </div>
+        <div class="btn-row" style="margin-top:4px;">
+          <button class="btn btn-primary" style="border:none;" id="saveTeamBtn">Save</button>
+          <button class="btn btn-outline dark" style="display:none;" id="cancelTeamEditBtn">Cancel edit</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h3>Current team &amp; departments</h3>
+        <div id="teamList">Loading…</div>
+      </div>
+    </div>
+
+    <!-- CUSTOMERS PANEL -->
+    <div id="customersPanel" style="display:none;">
+      <div class="admin-card">
+        <h3>📋 Follow-ups due</h3>
+        <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:-6px;">Customers due for a check-in today or earlier, most overdue first.</p>
+        <div id="followupList">Loading…</div>
+      </div>
+
+      <div class="admin-card">
+        <h3 id="custFormTitle">Log a new purchase</h3>
+        <input type="hidden" id="editCustId">
+        <div class="field">
+          <label for="cuName">Customer name</label>
+          <input id="cuName" type="text" placeholder="e.g. Grace Banda">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="cuPhone">Phone</label>
+            <input id="cuPhone" type="tel" placeholder="e.g. 0991234567">
+          </div>
+          <div class="field">
+            <label for="cuEmail">Email (optional)</label>
+            <input id="cuEmail" type="email" placeholder="optional">
+          </div>
+        </div>
+        <div class="field">
+          <label for="cuLocation">Location / area</label>
+          <input id="cuLocation" type="text" placeholder="e.g. Area 49, Lilongwe">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="cuProductType">Product type</label>
+            <select id="cuProductType">
+              <option>Fertiliser</option>
+              <option>Seedlings</option>
+              <option>Manure</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cuQuantity">Quantity</label>
+            <input id="cuQuantity" type="text" placeholder="e.g. 2 bags">
+          </div>
+        </div>
+        <div class="field">
+          <label for="cuDetail">Product detail (optional)</label>
+          <input id="cuDetail" type="text" placeholder="e.g. Tomato Tengeru Select">
+        </div>
+        <div class="field">
+          <label for="cuDate">Purchase date</label>
+          <input id="cuDate" type="date">
+        </div>
+        <div class="field">
+          <label for="cuNotes">Notes (optional)</label>
+          <textarea id="cuNotes" rows="2"></textarea>
+        </div>
+        <div class="btn-row" style="margin-top:4px;">
+          <button class="btn btn-primary" style="border:none;" id="saveCustBtn">Save purchase</button>
+          <button class="btn btn-outline dark" style="display:none;" id="cancelCustEditBtn">Cancel edit</button>
+        </div>
+        <p style="font-size:0.78rem; margin-top:10px;">Branch agents can also log sales without logging in at: <code>log-purchase.html</code></p>
+      </div>
+
+      <div class="admin-card">
+        <h3>✏️ Follow-up message templates</h3>
+        <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:-6px;">Use {name}, {product}, and {quantity} — they're filled in automatically when you send.</p>
+        <div id="templateEditor">Loading…</div>
+        <button class="btn btn-primary" style="border:none; margin-top:8px;" id="saveTemplatesBtn">Save templates</button>
+      </div>
+
+      <div class="admin-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="margin-bottom:0;">All customers</h3>
+          <button class="btn btn-outline dark" style="padding:8px 14px; font-size:0.82rem;" id="exportCsvBtn">⬇ Download Excel</button>
+        </div>
+        <div id="customerList" style="margin-top:12px;">Loading…</div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIALS & PARTNERS PANEL -->
+    <div id="testimonialsPanel" style="display:none;">
+      <div class="admin-card">
+        <h3 id="testiFormTitle">Add a testimonial</h3>
+        <input type="hidden" id="editTestiId">
+        <div class="field">
+          <label for="tsName">Customer name</label>
+          <input id="tsName" type="text" placeholder="e.g. Grace Banda">
+        </div>
+        <div class="field">
+          <label for="tsLocation">Location (optional)</label>
+          <input id="tsLocation" type="text" placeholder="e.g. Lilongwe">
+        </div>
+        <div class="field">
+          <label for="tsMessage">Testimonial message</label>
+          <textarea id="tsMessage" rows="3" placeholder="What did the customer say?"></textarea>
+        </div>
+        <div class="field">
+          <label for="tsImage">Photo file name (optional)</label>
+          <input id="tsImage" type="text" placeholder="e.g. images/testimonials/grace.jpg">
+        </div>
+        <div class="field">
+          <label><input type="checkbox" id="tsActive" checked style="width:auto; margin-right:6px;"> Visible on the website</label>
+        </div>
+        <div class="btn-row" style="margin-top:4px;">
+          <button class="btn btn-primary" style="border:none;" id="saveTestiBtn">Save testimonial</button>
+          <button class="btn btn-outline dark" style="display:none;" id="cancelTestiEditBtn">Cancel edit</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h3>Current testimonials</h3>
+        <div id="testiList">Loading…</div>
+      </div>
+
+      <div class="admin-card">
+        <h3 id="partnerFormTitle">Add a partner</h3>
+        <input type="hidden" id="editPartnerId">
+        <div class="field">
+          <label for="prName">Partner name</label>
+          <input id="prName" type="text" placeholder="e.g. NASFAM">
+        </div>
+        <div class="field">
+          <label for="prLogo">Logo file name (optional)</label>
+          <input id="prLogo" type="text" placeholder="e.g. images/partners/nasfam.png">
+          <div style="font-size:0.76rem; color:var(--ink-soft); margin-top:4px;">Leave blank to show the partner's name as a text badge instead.</div>
+        </div>
+        <div class="field">
+          <label for="prWebsite">Website link (optional)</label>
+          <input id="prWebsite" type="text" placeholder="https://...">
+        </div>
+        <div class="field">
+          <label><input type="checkbox" id="prActive" checked style="width:auto; margin-right:6px;"> Visible on the website</label>
+        </div>
+        <div class="btn-row" style="margin-top:4px;">
+          <button class="btn btn-primary" style="border:none;" id="savePartnerBtn">Save partner</button>
+          <button class="btn btn-outline dark" style="display:none;" id="cancelPartnerEditBtn">Cancel edit</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h3>Current partners</h3>
+        <div id="partnerList">Loading…</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="config.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer onerror="window.EAGLE_SDK_FAILED = true;"></script>
+<script>
+// ---- Visible error banner ----
+// If anything in this script throws unexpectedly, show it on-screen
+// instead of failing silently — makes remote troubleshooting possible
+// without needing browser dev tools.
+window.onerror = function (msg, url, line) {
+  var el = document.getElementById('jsErrorBox');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'jsErrorBox';
+    el.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#B33A3A;color:#fff;padding:12px 16px;font-size:12px;font-family:sans-serif;z-index:9999;';
+    document.body.appendChild(el);
+  }
+  el.textContent = 'Page error: ' + msg + ' (line ' + line + ') — screenshot this and send it back.';
+  return false;
+};
+
+// ---- Passcode gate ----
+// This is a light deterrent so casual visitors don't stumble onto the
+// login form, NOT real security — the actual protection is the Supabase
+// login below, which is required no matter what. Change ACCESS_CODE to
+// whatever you like; anyone with the file could technically read it, so
+// don't reuse a password you use anywhere else.
+const ACCESS_CODE = 'EAGLE2026';
+
+function toggleGateVisibility() {
+  const input = document.getElementById('gateCode');
+  const btn = document.getElementById('gateToggleBtn');
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = 'Hide'; }
+  else { input.type = 'password'; btn.textContent = 'Show'; }
+}
+
+function checkGate() {
+  const entered = document.getElementById('gateCode').value.trim();
+  const statusEl = document.getElementById('gateStatus');
+  if (entered.toLowerCase() === ACCESS_CODE.toLowerCase()) {
+    try { localStorage.setItem('eagleGateOk', '1'); } catch (e) { /* storage blocked — continue anyway */ }
+    document.getElementById('gateView').style.display = 'none';
+    checkSession();
+  } else {
+    statusEl.textContent = 'Incorrect access code. Please check for extra spaces or autocorrect and try again.';
+    statusEl.classList.add('show');
+  }
+}
+
+function gateAlreadyPassed() {
+  try { return localStorage.getItem('eagleGateOk') === '1'; } catch (e) { return false; }
+}
+
+const loginView = document.getElementById('loginView');
+const dashView = document.getElementById('dashView');
+let supabase;
+
+async function initSupabase() {
+  try {
+    const cfg = window.EAGLE_CONFIG;
+    if (!cfg || !cfg.SUPABASE_URL || cfg.SUPABASE_URL.includes('YOUR_SUPABASE')) {
+      throw new Error('This site is not connected to a database yet. Follow ADMIN_SETUP_GUIDE.md to finish setup, then reload this page.');
+    }
+    if (window.EAGLE_SDK_FAILED || !window.supabase || !window.supabase.createClient) {
+      throw new Error('Could not load the admin system. Check your internet connection and try again.');
+    }
+    supabase = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+    return true;
+  } catch (e) {
+    loginView.style.display = 'block';
+    dashView.style.display = 'none';
+    const statusEl = document.getElementById('loginStatus');
+    statusEl.textContent = e.message;
+    statusEl.classList.add('show');
+    document.querySelector('#loginView .admin-card').style.display = 'none';
+    return false;
+  }
+}
+
+async function checkSession() {
+  if (!supabase) { const ok = await initSupabase(); if (!ok) return; }
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    loginView.style.display = 'none';
+    dashView.style.display = 'block';
+    loadProducts();
+    loadTeam();
+  } else {
+    loginView.style.display = 'block';
+    dashView.style.display = 'none';
+  }
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPass').value;
+  const statusEl = document.getElementById('loginStatus');
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    statusEl.textContent = error.message;
+    statusEl.classList.add('show');
+  } else {
+    statusEl.classList.remove('show');
+    checkSession();
+  }
+}
+
+async function doLogout() {
+  await supabase.auth.signOut();
+  checkSession();
+}
+
+function resetForm() {
+  document.getElementById('editId').value = '';
+  document.getElementById('pName').value = '';
+  document.getElementById('pCategory').value = 'Fertiliser';
+  document.getElementById('pPrice').value = '';
+  document.getElementById('pDesc').value = '';
+  document.getElementById('pImage').value = '';
+  document.getElementById('pActive').checked = true;
+  document.getElementById('formTitle').textContent = 'Add a product';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+}
+
+async function saveProduct() {
+  const id = document.getElementById('editId').value;
+  const record = {
+    name: document.getElementById('pName').value.trim(),
+    category: document.getElementById('pCategory').value,
+    price_label: document.getElementById('pPrice').value.trim(),
+    description: document.getElementById('pDesc').value.trim(),
+    image_url: document.getElementById('pImage').value.trim() || null,
+    active: document.getElementById('pActive').checked,
+  };
+  if (!record.name || !record.price_label) {
+    showDashStatus('Please enter at least a product name and price.', false);
+    return;
+  }
+  let error;
+  if (id) {
+    ({ error } = await supabase.from('products').update(record).eq('id', id));
+  } else {
+    ({ error } = await supabase.from('products').insert(record));
+  }
+  if (error) {
+    showDashStatus(error.message, false);
+  } else {
+    showDashStatus(id ? 'Product updated.' : 'Product added.', true);
+    resetForm();
+    loadProducts();
+  }
+}
+
+function editProduct(p) {
+  document.getElementById('editId').value = p.id;
+  document.getElementById('pName').value = p.name;
+  document.getElementById('pCategory').value = p.category;
+  document.getElementById('pPrice').value = p.price_label;
+  document.getElementById('pDesc').value = p.description || '';
+  document.getElementById('pImage').value = p.image_url || '';
+  document.getElementById('pActive').checked = p.active;
+  document.getElementById('formTitle').textContent = 'Edit product';
+  document.getElementById('cancelEditBtn').style.display = 'inline-flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function deleteProduct(id, name) {
+  if (!confirm('Remove "' + name + '"? This cannot be undone.')) return;
+  const { error } = await supabase.from('products').delete().eq('id', id);
+  if (error) { showDashStatus(error.message, false); }
+  else { showDashStatus('Product removed.', true); loadProducts(); }
+}
+
+function showDashStatus(msg, ok) {
+  const el = document.getElementById('dashStatus');
+  el.textContent = msg;
+  el.className = 'status-msg show ' + (ok ? 'status-ok' : 'status-err');
+}
+
+async function loadProducts() {
+  const listEl = document.getElementById('productList');
+  const { data, error } = await supabase.from('products').select('*').order('category').order('sort_order');
+  if (error) { listEl.textContent = 'Could not load products: ' + error.message; return; }
+  if (!data.length) { listEl.textContent = 'No products yet — add your first one above.'; return; }
+  listEl.innerHTML = data.map(p => `
+    <div class="product-row">
+      ${p.image_url ? `<img src="${escapeHtml(p.image_url)}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:8px;flex-shrink:0;margin-right:2px;" onerror="this.style.display='none'">` : ''}
+      <div class="pinfo">
+        <div class="pname">${escapeHtml(p.name)} ${!p.active ? '<span class="inactive-tag">Hidden</span>' : ''}</div>
+        <div class="pmeta">${escapeHtml(p.category)} · ${escapeHtml(p.price_label)}</div>
+      </div>
+      <div class="pactions">
+        <button class="btn-edit" data-id="${p.id}">Edit</button>
+        <button class="btn-del" data-id="${p.id}">Delete</button>
+      </div>
+    </div>
+  `).join('');
+  Array.prototype.forEach.call(listEl.querySelectorAll('.btn-edit'), btn => btn.addEventListener('click', () => {
+    const p = data.find(x => x.id === btn.dataset.id);
+    editProduct(p);
+  }));
+  Array.prototype.forEach.call(listEl.querySelectorAll('.btn-del'), btn => btn.addEventListener('click', () => {
+    const p = data.find(x => x.id === btn.dataset.id);
+    deleteProduct(p.id, p.name);
+  }));
+}
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+
+// ---- Team & Departments (same pattern as Products) ----
+function resetTeamForm() {
+  document.getElementById('editTeamId').value = '';
+  document.getElementById('tName').value = '';
+  document.getElementById('tRole').value = '';
+  document.getElementById('tBio').value = '';
+  document.getElementById('tImage').value = '';
+  document.getElementById('tActive').checked = true;
+  document.getElementById('teamFormTitle').textContent = 'Add a team member / department';
+  document.getElementById('cancelTeamEditBtn').style.display = 'none';
+}
+
+async function saveTeam() {
+  const id = document.getElementById('editTeamId').value;
+  const record = {
+    name: document.getElementById('tName').value.trim(),
+    role: document.getElementById('tRole').value.trim(),
+    bio: document.getElementById('tBio').value.trim(),
+    image_url: document.getElementById('tImage').value.trim() || null,
+    active: document.getElementById('tActive').checked,
+  };
+  if (!record.name || !record.role) {
+    showDashStatus('Please enter at least a name and role.', false);
+    return;
+  }
+  let error;
+  if (id) {
+    ({ error } = await supabase.from('team_members').update(record).eq('id', id));
+  } else {
+    ({ error } = await supabase.from('team_members').insert(record));
+  }
+  if (error) {
+    showDashStatus(error.message, false);
+  } else {
+    showDashStatus(id ? 'Team member updated.' : 'Team member added.', true);
+    resetTeamForm();
+    loadTeam();
+  }
+}
+
+function editTeam(t) {
+  document.getElementById('editTeamId').value = t.id;
+  document.getElementById('tName').value = t.name;
+  document.getElementById('tRole').value = t.role;
+  document.getElementById('tBio').value = t.bio || '';
+  document.getElementById('tImage').value = t.image_url || '';
+  document.getElementById('tActive').checked = t.active;
+  document.getElementById('teamFormTitle').textContent = 'Edit team member / department';
+  document.getElementById('cancelTeamEditBtn').style.display = 'inline-flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function deleteTeam(id, name) {
+  if (!confirm('Remove "' + name + '"? This cannot be undone.')) return;
+  const { error } = await supabase.from('team_members').delete().eq('id', id);
+  if (error) { showDashStatus(error.message, false); }
+  else { showDashStatus('Removed.', true); loadTeam(); }
+}
+
+async function loadTeam() {
+  const listEl = document.getElementById('teamList');
+  const { data, error } = await supabase.from('team_members').select('*').order('sort_order');
+  if (error) { listEl.textContent = 'Could not load team: ' + error.message; return; }
+  if (!data.length) { listEl.textContent = 'No team members yet — add your first one above.'; return; }
+  listEl.innerHTML = data.map(t => `
+    <div class="product-row">
+      ${t.image_url ? `<img src="${escapeHtml(t.image_url)}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:50%;flex-shrink:0;margin-right:2px;" onerror="this.style.display='none'">` : ''}
+      <div class="pinfo">
+        <div class="pname">${escapeHtml(t.name)} ${!t.active ? '<span class="inactive-tag">Hidden</span>' : ''}</div>
+        <div class="pmeta">${escapeHtml(t.role)}</div>
+      </div>
+      <div class="pactions">
+        <button class="btn-edit" data-id="${t.id}">Edit</button>
+        <button class="btn-del" data-id="${t.id}">Delete</button>
+      </div>
+    </div>
+  `).join('');
+  Array.prototype.forEach.call(listEl.querySelectorAll('.btn-edit'), btn => btn.addEventListener('click', () => {
+    const t = data.find(x => x.id === btn.dataset.id);
+    editTeam(t);
+  }));
+  Array.prototype.forEach.call(listEl.querySelectorAll('.btn-del'), btn => btn.addEventListener('click', () => {
+    const t = data.find(x => x.id === btn.dataset.id);
+    deleteTeam(t.id, t.name);
+  }));
+}
+
+function switchTab(which) {
+  const productsPanel = document.getElementById('productsPanel');
+  const teamPanel = document.getElementById('teamPanel');
+  const customersPanel = document.getElementById('customersPanel');
+  const testimonialsPanel = document.getElementById('testimonialsPanel');
+  const tabProducts = document.getElementById('tabBtnProducts');
+  const tabTeam = document.getElementById('tabBtnTeam');
+  const tabCustomers = document.getElementById('tabBtnCustomers');
+  const tabTestimonials = document.getElementById('tabBtnTestimonials');
+  productsPanel.style.display = 'none';
+  teamPanel.style.display = 'none';
+  customersPanel.style.display = 'none';
+  testimonialsPanel.style.display = 'none';
+  tabProducts.classList.remove('active');
+  tabTeam.classList.remove('active');
+  tabCustomers.classList.remove('active');
+  tabTestimonials.classList.remove('active');
+  if (which === 'team') {
+    teamPanel.style.display = 'block';
+    tabTeam.classList.add('active');
+  } else if (which === 'customers') {
+    customersPanel.style.display = 'block';
+    tabCustomers.classList.add('active');
+    loadFollowups();
+    loadTemplates();
+    loadCustomers();
+  } else if (which === 'testimonials') {
+    testimonialsPanel.style.display = 'block';
+    tabTestimonials.classList.add('active');
+    loadTestimonialsAdmin();
+    loadPartnersAdmin();
+  } else {
+    productsPanel.style.display = 'block';
+    tabProducts.classList.add('active');
+  }
+}
+
+// ==================================================================
+// Customers & Follow-ups
+// ==================================================================
+
+// Converts a Malawi-style local number (e.g. "0998123456") into the
+// international format wa.me and sms: links need. Leaves already-
+// international numbers (starting with +/265) unchanged.
+function toIntlPhone(phone) {
+  var digits = String(phone || '').replace(/[^\d]/g, '');
+  if (!digits) return '';
+  if (digits.indexOf('265') === 0) return digits;
+  if (digits.indexOf('0') === 0) return '265' + digits.slice(1);
+  return digits;
+}
+
+function fillTemplate(msg, cust) {
+  return String(msg || '')
+    .replace(/\{name\}/g, cust.customer_name || '')
+    .replace(/\{product\}/g, cust.product_detail || cust.product_type || '')
+    .replace(/\{quantity\}/g, cust.quantity || '');
+}
+
+let EAGLE_TEMPLATES = { Seedlings: '', Fertiliser: '', Manure: '' };
+
+function daysOverdue(followUpDate) {
+  const due = new Date(followUpDate + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return Math.round((today - due) / 86400000);
+}
+
+async function loadFollowups() {
+  const listEl = document.getElementById('followupList');
+  const today = new Date().toISOString().slice(0, 10);
+  const { data, error } = await supabase.from('customers')
+    .select('*')
+    .eq('follow_up_status', 'pending')
+    .lte('follow_up_date', today)
+    .order('follow_up_date');
+  if (error) { listEl.textContent = 'Could not load follow-ups: ' + error.message; return; }
+  if (!data.length) { listEl.innerHTML = '<p class="no-due">Nothing due right now — you\'re all caught up. ✅</p>'; return; }
+
+  listEl.innerHTML = data.map(c => {
+    const msg = fillTemplate(EAGLE_TEMPLATES[c.product_type] || '', c);
+    const intlPhone = toIntlPhone(c.phone);
+    const overdue = daysOverdue(c.follow_up_date);
+    const overdueLabel = overdue <= 0 ? 'Due today' : overdue + ' day' + (overdue === 1 ? '' : 's') + ' overdue';
+    return `
+      <div class="due-item">
+        <div class="due-name">${escapeHtml(c.customer_name)} <span style="font-weight:400; color:var(--ink-soft);">— ${escapeHtml(overdueLabel)}</span></div>
+        <div class="due-meta">${escapeHtml(c.product_type)}${c.product_detail ? ' · ' + escapeHtml(c.product_detail) : ''}${c.location ? ' · ' + escapeHtml(c.location) : ''}</div>
+        <div class="due-actions">
+          ${intlPhone ? `<a class="chan-wa" href="https://wa.me/${intlPhone}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ''}
+          ${intlPhone ? `<a class="chan-sms" href="sms:${intlPhone}?body=${encodeURIComponent(msg)}">✉️ SMS</a>` : ''}
+          ${c.email ? `<a class="chan-email" href="mailto:${escapeHtml(c.email)}?subject=${encodeURIComponent('Checking in from Eagle Agribusiness')}&body=${encodeURIComponent(msg)}">📧 Email</a>` : ''}
+          <button class="chan-done" data-id="${c.id}">✓ Mark Done</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  Array.prototype.forEach.call(listEl.querySelectorAll('.chan-done'), btn => btn.addEventListener('click', async () => {
+    const { error } = await supabase.from('customers').update({ follow_up_status: 'done' }).eq('id', btn.dataset.id);
+    if (error) { showDashStatus(error.message, false); }
+    else { showDashStatus('Marked as done.', true); loadFollowups(); loadCustomers(); }
+  }));
+}
+
+function resetCustForm() {
+  document.getElementById('editCustId').value = '';
+  document.getElementById('cuName').value = '';
+  document.getElementById('cuPhone').value = '';
+  document.getElementById('cuEmail').value = '';
+  document.getElementById('cuLocation').value = '';
+  document.getElementById('cuProductType').value = 'Fertiliser';
+  document.getElementById('cuQuantity').value = '';
+  document.getElementById('cuDetail').value = '';
+  document.getElementById('cuDate').valueAsDate = new Date();
+  document.getElementById('cuNotes').value = '';
+  document.getElementById('custFormTitle').textContent = 'Log a new purchase';
+  document.getElementById('cancelCustEditBtn').style.display = 'none';
+}
+
+async function saveCustomer() {
+  const id = document.getElementById('editCustId').value;
+  const record = {
+    customer_name: document.getElementById('cuName').value.trim(),
+    phone: document.getElementById('cuPhone').value.trim(),
+    email: document.getElementById('cuEmail').value.trim(),
+    location: document.getElementById('cuLocation').value.trim(),
+    product_type: document.getElementById('cuProductType').value,
+    quantity: document.getElementById('cuQuantity').value.trim(),
+    product_detail: document.getElementById('cuDetail').value.trim(),
+    purchase_date: document.getElementById('cuDate').value,
+    notes: document.getElementById('cuNotes').value.trim(),
+  };
+  if (!record.customer_name || !record.purchase_date) {
+    showDashStatus('Please enter at least the customer name and purchase date.', false);
+    return;
+  }
+  let error;
+  if (id) {
+    ({ error } = await supabase.from('customers').update(record).eq('id', id));
+  } else {
+    ({ error } = await supabase.from('customers').insert(record));
+  }
+  if (error) {
+    showDashStatus(error.message, false);
+  } else {
+    showDashStatus(id ? 'Purchase updated.' : 'Purchase logged.', true);
+    resetCustForm();
+    loadFollowups();
+    loadCustomers();
+  }
+}
+
+function editCustomer(c) {
+  document.getElementById('editCustId').value = c.id;
+  document.getElementById('cuName').value = c.customer_name;
+  document.getElementById('cuPhone').value = c.phone || '';
+  document.getElementById('cuEmail').value = c.email || '';
+  document.getElementById('cuLocation').value = c.location || '';
+  document.getElementById('cuProductType').value = c.product_type;
+  document.getElementById('cuQuantity').value = c.quantity || '';
+  document.getElementById('cuDetail').value = c.product_detail || '';
+  document.getElementById('cuDate').value = c.purchase_date;
+  document.getElementById('cuNotes').value = c.notes || '';
+  document.getElementById('custFormTitle').textContent = 'Edit purchase';
+  document.getElementById('cancelCustEditBtn').style.display = 'inline-flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function deleteCustomer(id, name) {
+  if (!confirm('Remove the record for "' + name + '"? This cannot be undone.')) return;
+  const { error } = await supabase.from('customers').delete().eq('id', id);
+  if (error) { showDashStatus(error.message, false); }
+  else { showDashStatus('Removed.', true); loadFollowups(); loadCustomers(); }
+}
+
+async function loadCustomers() {
+  const listEl = document.getElementById('customerList');
+  const { data, error } = await supabase.from('customers').select('*').order('purchase_date', { ascending: false });
+  if (error) { listEl.textContent = 'Could not load customers: ' + error.message; return; }
+  if (!data.length) { listEl.textContent = 'No purchases logged yet.'; return; }
+  window.EAGLE_ALL_CUSTOMERS = data;
+  listEl.innerHTML = data.map(c => `
+    <div class="cust-row">
+      <div class="cr-top"><span>${escapeHtml(c.customer_name)}</span><span>${escapeHtml(c.purchase_date)}</span></div>
+      <div class="cr-meta">${escapeHtml(c.product_type)}${c.quantity ? ' · ' + escapeHtml(c.quantity) : ''}${c.location ? ' · ' + escapeHtml(c.location) : ''} · Follow-up: ${escapeHtml(c.follow_up_date || '—')} (${c.follow_up_status === 'done' ? 'done' : 'pending'})</div>
+      <div class="cr-actions">
+        <button class="btn-edit" data-id="${c.id}">Edit</button>
+        <button class="btn-del" data-id="${c.id}">Delete</button>
+      </div>
+    </div>
+  `).join('');
+  Array.prototype.forEach.call(listEl.querySelectorAll('.btn-edit'), btn => btn.addEventListener('click', () => {
+    const c = data.find(x => x.id === btn.dataset.id);
+    editCustomer(c);
+  }));
+  Array.prototype.forEach.call(listEl.querySelectorAll('.btn-del'), btn => btn.addEventListener('click', () => {
+    const c = data.find(x => x.id === btn.dataset.id);
+    deleteCustomer(c.id, c.customer_name);
+  }));
+}
+
+async function loadTemplates() {
+  const editorEl = document.getElementById('templateEditor');
+  const { data, error } = await supabase.from('message_templates').select('*');
+  if (error) { editorEl.textContent = 'Could not load templates: ' + error.message; return; }
+  data.forEach(t => { EAGLE_TEMPLATES[t.product_type] = t.message; });
+  editorEl.innerHTML = ['Seedlings', 'Fertiliser', 'Manure'].map(type => `
+    <div class="tpl-block">
+      <label>${type}</label>
+      <textarea rows="3" data-type="${type}">${escapeHtml(EAGLE_TEMPLATES[type] || '')}</textarea>
+    </div>
+  `).join('');
+}
+
+async function saveTemplates() {
+  const areas = document.querySelectorAll('#templateEditor textarea');
+  let lastError = null;
+  for (const area of Array.prototype.slice.call(areas)) {
+    const type = area.dataset.type;
+    const message = area.value;
+    EAGLE_TEMPLATES[type] = message;
+    const { error } = await supabase.from('message_templates').update({ message }).eq('product_type', type);
+    if (error) lastError = error;
+  }
+  if (lastError) showDashStatus(lastError.message, false);
+  else { showDashStatus('Templates saved.', true); loadFollowups(); }
+}
+
+function exportCsv() {
+  const rows = window.EAGLE_ALL_CUSTOMERS || [];
+  if (!rows.length) { showDashStatus('No customer data to export yet.', false); return; }
+  const headers = ['customer_name', 'phone', 'email', 'location', 'product_type', 'product_detail', 'quantity', 'purchase_date', 'follow_up_date', 'follow_up_status', 'notes'];
+  const csvEscape = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const csv = [headers.join(',')].concat(
+    rows.map(r => headers.map(h => csvEscape(r[h])).join(','))
+  ).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'eagle-agribusiness-customers-' + new Date().toISOString().slice(0, 10) + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ==================================================================
+// Testimonials & Partners
+// ==================================================================
+function resetTestiForm() {
+  document.getElementById('editTestiId').value = '';
+  document.getElementById('tsName').value = '';
+  document.getElementById('tsLocation').value = '';
+  document.getElementById('tsMessage').value = '';
+  document.getElementById('tsImage').value = '';
+  document.getElementById('tsActive').checked = true;
+  document.getElementById('testiFormTitle').textContent = 'Add a testimonial';
+  document.getElementById('cancelTestiEditBtn').style.display = 'none';
+}
+
+async function saveTestimonial() {
+  const id = document.getElementById('editTestiId').value;
+  const record = {
+    customer_name: document.getElementById('tsName').value.trim(),
+    location: document.getElementById('tsLocation').value.trim(),
+    message: document.getElementById('tsMessage').value.trim(),
+    image_url: document.getElementById('tsImage').value.trim() || null,
+    active: document.getElementById('tsActive').checked,
+  };
+  if (!record.customer_name || !record.message) {
+    showDashStatus('Please enter at least a customer name and message.', false);
+    return;
+  }
+  let error;
+  if (id) {
+    ({ error } = await supabase.from('testimonials').update(record).eq('id', id));
+  } else {
+    ({ error } = await supabase.from('testimonials').insert(record));
+  }
+  if (error) { showDashStatus(error.message, false); }
+  else { showDashStatus(id ? 'Testimonial updated.' : 'Testimonial added.', true); resetTestiForm(); loadTestimonialsAdmin(); }
+}
+
+function editTestimonial(t) {
+  document.getElementById('editTestiId').value = t.id;
+  document.getElementById('tsName').value = t.customer_name;
+  document.getElementById('tsLocation').value = t.location || '';
+  document.getElementById('tsMessage').value = t.message;
+  document.getElementById('tsImage').value = t.image_url || '';
+  document.getElementById('tsActive').checked = t.active;
+  document.getElementById('testiFormTitle').textContent = 'Edit testimonial';
+  document.getElementById('cancelTestiEditBtn').style.display = 'inline-flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function deleteTestimonial(id, name) {
+  if (!confirm('Remove the testimonial from "' + name + '"?')) return;
+  const { error } = await supabase.from('testimonials').delete().eq('id', id);
+  if (error) { showDashStatus(error.message, false); }
+  else { showDashStatus('Removed.', true); loadTestimonialsAdmin(); }
+}
+
+async function loadTestimonialsAdmin() {
+  const listEl = document.getElementById('testiList');
+  const { data, error } = await supabase.from('testimonials').select('*').order('sort_order');
+  if (error) { listEl.textContent = 'Could not load testimonials: ' + error.message; return; }
+  if (!data.length) { listEl.textContent = 'No testimonials yet — add your first one above.'; return; }
+  listEl.innerHTML = data.map(t => `
+    <div class="product-row">
+      <div class="pinfo">
+        <div class="pname">${escapeHtml(t.customer_name)} ${!t.active ? '<span class="inactive-tag">Hidden</span>' : ''}</div>
+        <div class="pmeta">${escapeHtml((t.message || '').slice(0, 60))}${t.message && t.message.length > 60 ? '…' : ''}</div>
+      </div>
+      <div class="pactions">
+        <button class="btn-edit" data-id="${t.id}">Edit</button>
+        <button class="btn-del" data-id="${t.id}">Delete</button>
+      </div>
+    </div>
+  `).join('');
+  Array.prototype.forEach.call(listEl.querySelectorAll('.btn-edit'), btn => btn.addEventListener('click', () => {
+    editTestimonial(data.find(x => x.id === btn.dataset.id));
+  }));
+  Array.prototype.forEach.call(listEl.querySelectorAll('.btn-del'), btn => btn.addEventListener('click', () => {
+    const t = data.find(x => x.id === btn.dataset.id);
+    deleteTestimonial(t.id, t.customer_name);
+  }));
+}
+
+function resetPartnerForm() {
+  document.getElementById('editPartnerId').value = '';
+  document.getElementById('prName').value = '';
+  document.getElementById('prLogo').value = '';
+  document.getElementById('prWebsite').value = '';
+  document.getElementById('prActive').checked = true;
+  document.getElementById('partnerFormTitle').textContent = 'Add a partner';
+  document.getElementById('cancelPartnerEditBtn').style.display = 'none';
+}
+
+async function savePartner() {
+  const id = document.getElementById('editPartnerId').value;
+  const record = {
+    name: document.getElementById('prName').value.trim(),
+    logo_url: document.getElementById('prLogo').value.trim() || null,
+    website_url: document.getElementById('prWebsite').value.trim() || null,
+    active: document.getElementById('prActive').checked,
+  };
+  if (!record.name) { showDashStatus('Please enter a partner name.', false); return; }
+  let error;
+  if (id) {
+    ({ error } = await supabase.from('partners').update(record).eq('id', id));
+  } else {
+    ({ error } = await supabase.from('partners').insert(record));
+  }
+  if (error) { showDashStatus(error.message, false); }
+  else { showDashStatus(id ? 'Partner updated.' : 'Partner added.', true); resetPartnerForm(); loadPartnersAdmin(); }
+}
+
+function editPartner(p) {
+  document.getElementById('editPartnerId').value = p.id;
+  document.getElementById('prName').value = p.name;
+  document.getElementById('prLogo').value = p.logo_url || '';
+  document.getElementById('prWebsite').value = p.website_url || '';
+  document.getElementById('prActive').checked = p.active;
+  document.getElementById('partnerFormTitle').textContent = 'Edit partner';
+  document.getElementById('cancelPartnerEditBtn').style.display = 'inline-flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function deletePartner(id, name) {
+  if (!confirm('Remove partner "' + name + '"?')) return;
+  const { error } = await supabase.from('partners').delete().eq('id', id);
+  if (error) { showDashStatus(error.message, false); }
+  else { showDashStatus('Removed.', true); loadPartnersAdmin(); }
+}
+
+async function loadPartnersAdmin() {
+  const listEl = document.getElementById('partnerList');
+  const { data, error } = await supabase.from('partners').select('*').order('sort_order');
+  if (error) { listEl.textContent = 'Could not load partners: ' + error.message; return; }
+  if (!data.length) { listEl.textContent = 'No partners yet — add your first one above.'; return; }
+  listEl.innerHTML = data.map(p => `
+    <div class="product-row">
+      ${p.logo_url ? `<img src="${escapeHtml(p.logo_url)}" alt="" style="width:44px;height:44px;object-fit:contain;flex-shrink:0;margin-right:2px;" onerror="this.style.display='none'">` : ''}
+      <div class="pinfo">
+        <div class="pname">${escapeHtml(p.name)} ${!p.active ? '<span class="inactive-tag">Hidden</span>' : ''}</div>
+        <div class="pmeta">${p.website_url ? escapeHtml(p.website_url) : 'No website link'}</div>
+      </div>
+      <div class="pactions">
+        <button class="btn-edit" data-id="${p.id}">Edit</button>
+        <button class="btn-del" data-id="${p.id}">Delete</button>
+      </div>
+    </div>
+  `).join('');
+  Array.prototype.forEach.call(listEl.querySelectorAll('.btn-edit'), btn => btn.addEventListener('click', () => {
+    editPartner(data.find(x => x.id === btn.dataset.id));
+  }));
+  Array.prototype.forEach.call(listEl.querySelectorAll('.btn-del'), btn => btn.addEventListener('click', () => {
+    const p = data.find(x => x.id === btn.dataset.id);
+    deletePartner(p.id, p.name);
+  }));
+}
+
+// ---- Wire up all buttons once the DOM is ready ----
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('gateToggleBtn').addEventListener('click', toggleGateVisibility);
+  document.getElementById('gateContinueBtn').addEventListener('click', checkGate);
+  document.getElementById('gateCode').addEventListener('keydown', function (e) { if (e.key === 'Enter') checkGate(); });
+
+  document.getElementById('loginSubmitBtn').addEventListener('click', doLogin);
+  document.getElementById('logoutBtn').addEventListener('click', doLogout);
+  document.getElementById('saveProductBtn').addEventListener('click', saveProduct);
+  document.getElementById('cancelEditBtn').addEventListener('click', resetForm);
+  document.getElementById('saveTeamBtn').addEventListener('click', saveTeam);
+  document.getElementById('cancelTeamEditBtn').addEventListener('click', resetTeamForm);
+  document.getElementById('saveCustBtn').addEventListener('click', saveCustomer);
+  document.getElementById('cancelCustEditBtn').addEventListener('click', resetCustForm);
+  document.getElementById('saveTemplatesBtn').addEventListener('click', saveTemplates);
+  document.getElementById('exportCsvBtn').addEventListener('click', exportCsv);
+  document.getElementById('saveTestiBtn').addEventListener('click', saveTestimonial);
+  document.getElementById('cancelTestiEditBtn').addEventListener('click', resetTestiForm);
+  document.getElementById('savePartnerBtn').addEventListener('click', savePartner);
+  document.getElementById('cancelPartnerEditBtn').addEventListener('click', resetPartnerForm);
+  document.getElementById('tabBtnProducts').addEventListener('click', function () { switchTab('products'); });
+  document.getElementById('tabBtnTeam').addEventListener('click', function () { switchTab('team'); });
+  document.getElementById('tabBtnCustomers').addEventListener('click', function () { switchTab('customers'); });
+  document.getElementById('tabBtnTestimonials').addEventListener('click', function () { switchTab('testimonials'); });
+
+  var cuDateEl = document.getElementById('cuDate');
+  if (cuDateEl) cuDateEl.valueAsDate = new Date();
+
+  if (gateAlreadyPassed()) {
+    document.getElementById('gateView').style.display = 'none';
+    checkSession();
+  }
+});
+</script>
+
+</body>
+</html>

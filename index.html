@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eagle Agribusiness & Extension Services | Your Trusted Partner in Agricultural Products</title>
+<meta name="description" content="Quality fertiliser, seedlings and manure from Eagle Agribusiness & Extension Services. Order via WhatsApp or call 0998 89 38 93.">
+<link rel="icon" href="images/logo.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;">
+      <img src="images/logo.png" class="logo" alt="Eagle Agribusiness logo">
+      <span class="brand">Eagle Agribusiness<small>&amp; Extension Services</small></span>
+    </a>
+    <nav class="top-nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="products.html">Products &amp; Pricing</a>
+      <a href="branches.html">Branches</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-slideshow" id="heroSlideshow">
+    <img src="images/hero-field.jpg" class="hero-photo active" alt="Eagle Agribusiness extension officers in the field">
+    <img src="images/farmer-scene.jpg" class="hero-photo" alt="Farmer using Eagle Agribusiness services">
+    <img src="images/products/tomato-select.jpg" class="hero-photo" alt="Tomato seedlings ready for transplant">
+    <img src="images/hero-fert.jpg" class="hero-photo" alt="Eagle Mbeya Fertiliser bags ready for sale">
+    <img src="images/products/cabbage-field-1.jpg" class="hero-photo" alt="Cabbage growing in the field">
+  </div>
+  <div class="slide-dots" id="heroDots">
+    <span class="active"></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="hero-copy">
+    <h1>Providing alternative farming solutions to farmers</h1>
+    <p>Quality fertiliser, seedlings &amp; manure — trusted by farmers across Lilongwe, Blantyre and Mzuzu.</p>
+  </div>
+</div>
+<div class="field-row"></div>
+
+<main>
+  <section class="section">
+    <div class="wrap">
+      <div class="btn-row">
+        <a class="btn btn-primary pulse" href="https://wa.me/265998893893" target="_blank" rel="noopener">💬 Order on WhatsApp</a>
+        <a class="btn btn-outline dark" href="tel:+265998893893">📞 Call 0998 89 38 93</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <span class="eyebrow">What we offer</span>
+      <h2>Everything your field needs, in one place</h2>
+      <div class="offer-grid">
+        <div class="offer-card reveal">
+          <div class="icon">🌱</div>
+          <h3>Fertiliser</h3>
+          <p>Eagle Mbeya Fertiliser (Hybrid), 25kg &amp; 50kg bags, for stronger yields.</p>
+        </div>
+        <div class="offer-card reveal">
+          <div class="icon">🥬</div>
+          <h3>Seedlings</h3>
+          <p>Ready-to-transplant tomato, onion, cabbage, lettuce, pepper &amp; eggplant.</p>
+        </div>
+        <div class="offer-card reveal">
+          <div class="icon">🐄</div>
+          <h3>Manure</h3>
+          <p>Natural manure to improve soil health, available at select branches.</p>
+        </div>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="products.html">See products &amp; prices</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Why farmers choose us</span>
+      <h2>A name you already know</h2>
+      <div class="card reveal">
+        <p style="margin-bottom:0;">Eagle Agribusiness &amp; Extension Services has grown into a network of official selling points across Lilongwe, Blantyre and Mzuzu, with a community of over <strong>21,000 followers</strong> on Facebook. We deal directly with farmers — no middlemen, no impersonators.</p>
+      </div>
+      <div class="trust-ribbon reveal">
+        MUSADZATI SITINAKUUZENI — buy only through our official numbers.
+      </div>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <span class="eyebrow">Find us</span>
+      <h2>9+ selling points, 3 regions</h2>
+      <p>From Area 49 in Lilongwe to Kameza in Blantyre and Chibavi in Mzuzu — there's an Eagle Agribusiness selling point near you.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="branches.html">View all branches</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="brand-line">Eagle Agribusiness &amp; Extension Services</div>
+  <div>Your Trusted Partner in Agricultural Products</div>
+  <div style="margin-top:10px;">0998 89 38 93 · eagleinvestment23@gmail.com · Lilongwe, Malawi</div>
+</footer>
+
+<nav class="tab-bar">
+  <a href="index.html" class="active"><span class="tab-icon">🏠</span>Home</a>
+  <a href="about.html"><span class="tab-icon">ℹ️</span>About</a>
+  <a href="products.html"><span class="tab-icon">🌾</span>Products</a>
+  <a href="branches.html"><span class="tab-icon">📍</span>Branches</a>
+  <a href="contact.html"><span class="tab-icon">☎️</span>Contact</a>
+</nav>
+
+<script src="reveal.js"></script>
+<script>
+(function () {
+  var photos = document.querySelectorAll('#heroSlideshow .hero-photo');
+  var dots = document.querySelectorAll('#heroDots span');
+  if (photos.length <= 1) return;
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return; // first photo stays visible, no motion
+
+  var i = 0;
+  setInterval(function () {
+    photos[i].classList.remove('active');
+    if (dots[i]) dots[i].classList.remove('active');
+    i = (i + 1) % photos.length;
+    photos[i].classList.add('active');
+    if (dots[i]) dots[i].classList.add('active');
+  }, 4000);
+})();
+</script>
+
+</body>
+</html>
