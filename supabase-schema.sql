@@ -236,9 +236,9 @@ create policy "Logged-in users can update templates"
 
 insert into message_templates (product_type, message)
 select * from (values
-  ('Seedlings', 'Hi {name}, it''s been 2 weeks since you got your {product} from Eagle Agribusiness. How are they growing? Let us know if you need more seedlings or any advice! 🌱'),
-  ('Fertiliser', 'Hi {name}, it''s been a month since your {product} purchase from Eagle Agribusiness. How has it been working for your field? Let us know if you''d like to order more. 🌾'),
-  ('Manure', 'Hi {name}, it''s been a month since your {product} purchase from Eagle Agribusiness. How is your soil doing? Reach out if you need another delivery. 🐄')
+  ('Seedlings', 'Hi {name}, it''s been 2 weeks since you got your {product} from Eagle Agribusiness. How are they growing? Let us know if you need more seedlings or any advice!'),
+  ('Fertiliser', 'Hi {name}, it''s been a month since your {product} purchase from Eagle Agribusiness. How has it been working for your field? Let us know if you''d like to order more.'),
+  ('Manure', 'Hi {name}, it''s been a month since your {product} purchase from Eagle Agribusiness. How is your soil doing? Reach out if you need another delivery.')
 ) as starter(product_type, message)
 where not exists (select 1 from message_templates);
 
@@ -338,3 +338,4 @@ create policy "Logged-in users can delete partners"
 
 -- No starter partners inserted — add real ones from the admin panel once
 -- Titus confirms which organisations count as official partners.
+
