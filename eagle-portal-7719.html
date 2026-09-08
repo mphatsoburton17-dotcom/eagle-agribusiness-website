@@ -35,7 +35,7 @@
   #loginView, #dashView { display:none; }
   .inactive-tag { font-size:0.68rem; background:#eee; color:#777; padding:2px 8px; border-radius:999px; margin-left:8px; }
   .logout-link { font-size:0.82rem; color: var(--ink-soft); text-decoration: underline; cursor:pointer; }
-  .admin-tabs { display:flex; gap:8px; margin:16px 0; }
+  .admin-tabs { display:flex; gap:8px; margin:16px 0; flex-wrap:wrap; }
   .admin-tab { flex:1; padding:10px; border-radius:10px; border:1px solid var(--line); background:#fff; color:var(--ink-soft); font-weight:700; font-size:0.85rem; cursor:pointer; }
   .admin-tab.active { background: var(--green-dark); color:#fff; border-color: var(--green-dark); }
   .due-item { padding:14px; border:1px solid var(--line); border-radius:var(--radius); margin-bottom:10px; background:#FFF9EC; border-left:4px solid var(--gold); }
@@ -59,6 +59,9 @@
   .cust-row .cr-meta { color:var(--ink-soft); margin-top:2px; }
   .cust-row .cr-actions { margin-top:6px; display:flex; gap:8px; }
   .cust-row .cr-actions button { font-size:0.75rem; font-weight:700; padding:5px 10px; border-radius:6px; border:none; cursor:pointer; }
+  /* The pill/gradient look, notice-box, upload-row, and button colors
+     now live in style.css (brand green/gold), so this page inherits
+     them automatically and no longer needs its own override block. */
 </style>
 </head>
 <body>
@@ -116,7 +119,10 @@
       <h1 style="margin-bottom:0;">Manage Content</h1>
       <span class="logout-link" id="logoutBtn">Sign out</span>
     </div>
-    <p>Changes here appear on the website immediately.</p>
+
+    <div class="notice-box">
+      <strong>Good to know:</strong> changes you make here save to your live database and show up for every visitor within a moment — no need to send anything to anyone.
+    </div>
 
     <div class="admin-tabs">
       <button class="admin-tab active" id="tabBtnProducts" type="button">Products</button>
@@ -158,6 +164,11 @@
           <label for="pImage">Photo file name (optional)</label>
           <input id="pImage" type="text" placeholder="e.g. images/products/tomato-select.jpg">
           <div style="font-size:0.76rem; color:var(--ink-soft); margin-top:4px;">Use one of the file names already in your images/products/ folder, or paste a full https:// image link.</div>
+          <div class="upload-row">
+            <input type="file" id="pImageUpload" accept="image/*">
+            <span class="upload-status" id="pImageUploadStatus"></span>
+          </div>
+          <div style="font-size:0.72rem; color:var(--ink-soft); margin-top:2px;">Or choose a photo here — it uploads straight into Supabase Storage and fills the field above for you.</div>
         </div>
         <div class="field">
           <label><input type="checkbox" id="pActive" checked style="width:auto; margin-right:6px;"> Visible on the website</label>
@@ -195,6 +206,10 @@
           <label for="tImage">Photo file name (optional)</label>
           <input id="tImage" type="text" placeholder="e.g. images/team/titus.jpg">
           <div style="font-size:0.76rem; color:var(--ink-soft); margin-top:4px;">Leave blank to show initials instead of a photo.</div>
+          <div class="upload-row">
+            <input type="file" id="tImageUpload" accept="image/*">
+            <span class="upload-status" id="tImageUploadStatus"></span>
+          </div>
         </div>
         <div class="field">
           <label><input type="checkbox" id="tActive" checked style="width:auto; margin-right:6px;"> Visible on the website</label>
@@ -214,7 +229,7 @@
     <!-- CUSTOMERS PANEL -->
     <div id="customersPanel" style="display:none;">
       <div class="admin-card">
-        <h3>📋 Follow-ups due</h3>
+        <h3>Follow-ups due</h3>
         <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:-6px;">Customers due for a check-in today or earlier, most overdue first.</p>
         <div id="followupList">Loading…</div>
       </div>
@@ -274,7 +289,7 @@
       </div>
 
       <div class="admin-card">
-        <h3>✏️ Follow-up message templates</h3>
+        <h3>Follow-up message templates</h3>
         <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:-6px;">Use {name}, {product}, and {quantity} — they're filled in automatically when you send.</p>
         <div id="templateEditor">Loading…</div>
         <button class="btn btn-primary" style="border:none; margin-top:8px;" id="saveTemplatesBtn">Save templates</button>
@@ -283,7 +298,7 @@
       <div class="admin-card">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <h3 style="margin-bottom:0;">All customers</h3>
-          <button class="btn btn-outline dark" style="padding:8px 14px; font-size:0.82rem;" id="exportCsvBtn">⬇ Download Excel</button>
+          <button class="btn btn-outline dark" style="padding:8px 14px; font-size:0.82rem;" id="exportCsvBtn">Download Excel</button>
         </div>
         <div id="customerList" style="margin-top:12px;">Loading…</div>
       </div>
@@ -309,6 +324,10 @@
         <div class="field">
           <label for="tsImage">Photo file name (optional)</label>
           <input id="tsImage" type="text" placeholder="e.g. images/testimonials/grace.jpg">
+          <div class="upload-row">
+            <input type="file" id="tsImageUpload" accept="image/*">
+            <span class="upload-status" id="tsImageUploadStatus"></span>
+          </div>
         </div>
         <div class="field">
           <label><input type="checkbox" id="tsActive" checked style="width:auto; margin-right:6px;"> Visible on the website</label>
@@ -335,6 +354,10 @@
           <label for="prLogo">Logo file name (optional)</label>
           <input id="prLogo" type="text" placeholder="e.g. images/partners/nasfam.png">
           <div style="font-size:0.76rem; color:var(--ink-soft); margin-top:4px;">Leave blank to show the partner's name as a text badge instead.</div>
+          <div class="upload-row">
+            <input type="file" id="prLogoUpload" accept="image/*">
+            <span class="upload-status" id="prLogoUploadStatus"></span>
+          </div>
         </div>
         <div class="field">
           <label for="prWebsite">Website link (optional)</label>
@@ -384,6 +407,11 @@ window.onerror = function (msg, url, line) {
 // whatever you like; anyone with the file could technically read it, so
 // don't reuse a password you use anywhere else.
 const ACCESS_CODE = 'EAGLE2026';
+
+// Name of the public Supabase Storage bucket used for the "choose a
+// photo" upload buttons below. Create this once in Supabase
+// (Storage → New bucket → name it exactly this → make it Public).
+const STORAGE_BUCKET = 'site-images';
 
 function toggleGateVisibility() {
   const input = document.getElementById('gateCode');
@@ -466,6 +494,37 @@ async function doLogin() {
 async function doLogout() {
   await supabase.auth.signOut();
   checkSession();
+}
+
+// ---- Reusable photo-upload helper ----
+// Wires a <input type="file"> to: upload the chosen image into the
+// STORAGE_BUCKET Supabase Storage bucket, then fill textFieldId with
+// the resulting public URL — exactly as if the person had typed it in
+// themselves. Nothing existing changes if this upload isn't used; the
+// manual "type a file name" field still works exactly as before.
+function wireUpload(fileInputId, textFieldId, statusId, folder) {
+  const fileInput = document.getElementById(fileInputId);
+  const statusEl = document.getElementById(statusId);
+  if (!fileInput) return;
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    statusEl.textContent = 'Uploading…';
+    statusEl.className = 'upload-status';
+    try {
+      const safeName = Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9.\-_]/g, '');
+      const path = folder + '/' + safeName;
+      const { error: uploadError } = await supabase.storage.from(STORAGE_BUCKET).upload(path, file, { upsert: true });
+      if (uploadError) throw uploadError;
+      const { data: urlData } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+      document.getElementById(textFieldId).value = urlData.publicUrl;
+      statusEl.textContent = 'Uploaded.';
+      statusEl.className = 'upload-status ok';
+    } catch (e) {
+      statusEl.textContent = 'Could not upload: ' + e.message + ' (make sure a public "' + STORAGE_BUCKET + '" bucket exists in Supabase Storage).';
+      statusEl.className = 'upload-status err';
+    }
+  });
 }
 
 function resetForm() {
@@ -731,7 +790,7 @@ async function loadFollowups() {
     .lte('follow_up_date', today)
     .order('follow_up_date');
   if (error) { listEl.textContent = 'Could not load follow-ups: ' + error.message; return; }
-  if (!data.length) { listEl.innerHTML = '<p class="no-due">Nothing due right now — you\'re all caught up. ✅</p>'; return; }
+  if (!data.length) { listEl.innerHTML = '<p class="no-due">Nothing due right now — you\'re all caught up.</p>'; return; }
 
   listEl.innerHTML = data.map(c => {
     const msg = fillTemplate(EAGLE_TEMPLATES[c.product_type] || '', c);
@@ -743,10 +802,10 @@ async function loadFollowups() {
         <div class="due-name">${escapeHtml(c.customer_name)} <span style="font-weight:400; color:var(--ink-soft);">— ${escapeHtml(overdueLabel)}</span></div>
         <div class="due-meta">${escapeHtml(c.product_type)}${c.product_detail ? ' · ' + escapeHtml(c.product_detail) : ''}${c.location ? ' · ' + escapeHtml(c.location) : ''}</div>
         <div class="due-actions">
-          ${intlPhone ? `<a class="chan-wa" href="https://wa.me/${intlPhone}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ''}
-          ${intlPhone ? `<a class="chan-sms" href="sms:${intlPhone}?body=${encodeURIComponent(msg)}">✉️ SMS</a>` : ''}
-          ${c.email ? `<a class="chan-email" href="mailto:${escapeHtml(c.email)}?subject=${encodeURIComponent('Checking in from Eagle Agribusiness')}&body=${encodeURIComponent(msg)}">📧 Email</a>` : ''}
-          <button class="chan-done" data-id="${c.id}">✓ Mark Done</button>
+          ${intlPhone ? `<a class="chan-wa" href="https://wa.me/${intlPhone}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+          ${intlPhone ? `<a class="chan-sms" href="sms:${intlPhone}?body=${encodeURIComponent(msg)}">SMS</a>` : ''}
+          ${c.email ? `<a class="chan-email" href="mailto:${escapeHtml(c.email)}?subject=${encodeURIComponent('Checking in from Eagle Agribusiness')}&body=${encodeURIComponent(msg)}">Email</a>` : ''}
+          <button class="chan-done" data-id="${c.id}">Mark Done</button>
         </div>
       </div>
     `;
@@ -1082,6 +1141,17 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('tabBtnTeam').addEventListener('click', function () { switchTab('team'); });
   document.getElementById('tabBtnCustomers').addEventListener('click', function () { switchTab('customers'); });
   document.getElementById('tabBtnTestimonials').addEventListener('click', function () { switchTab('testimonials'); });
+
+  // Photo-upload buttons (new) — hook up once Supabase has initialised
+  var wireAllUploads = function () {
+    wireUpload('pImageUpload', 'pImage', 'pImageUploadStatus', 'products');
+    wireUpload('tImageUpload', 'tImage', 'tImageUploadStatus', 'team');
+    wireUpload('tsImageUpload', 'tsImage', 'tsImageUploadStatus', 'testimonials');
+    wireUpload('prLogoUpload', 'prLogo', 'prLogoUploadStatus', 'partners');
+  };
+  var uploadWireTimer = setInterval(function () {
+    if (supabase) { wireAllUploads(); clearInterval(uploadWireTimer); }
+  }, 300);
 
   var cuDateEl = document.getElementById('cuDate');
   if (cuDateEl) cuDateEl.valueAsDate = new Date();
