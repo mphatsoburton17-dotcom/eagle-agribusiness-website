@@ -41,7 +41,6 @@ body {
   background: var(--white);
   line-height: 1.55;
   font-size: 16px;
-  padding-bottom: 74px;
 }
 
 h1, h2, h3, .display {
@@ -68,7 +67,7 @@ img { max-width: 100%; display: block; }
   border-bottom: 1px solid var(--line);
   position: sticky; top: 0; z-index: 20;
 }
-.site-header .wrap-inner { display: flex; align-items: center; gap: 12px; width: 100%; }
+.site-header .wrap-inner { display: flex; align-items: center; gap: 12px; width: 100%; position: relative; }
 .site-header img.logo { width: 42px; height: 32px; border-radius: 6px; }
 .site-header .brand { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--green-dark); line-height: 1.15; }
 .site-header .brand small { display: block; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.68rem; color: var(--ink-soft); letter-spacing: 0.03em; }
@@ -161,9 +160,9 @@ img { max-width: 100%; display: block; }
 /* buttons */
 .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
 .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 999px; font-weight: 700; font-size: 0.92rem; font-family: 'Inter', sans-serif; border: 2px solid transparent; cursor: pointer; }
-.btn-primary { background: var(--green-primary); color: var(--white); }
-.btn-primary:hover { background: var(--green-primary-dark); }
-.btn-outline { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.7); }
+.btn-primary { background: linear-gradient(135deg, var(--green-primary), var(--green-dark)); color: var(--white); text-transform: uppercase; letter-spacing: 0.02em; }
+.btn-primary:hover { background: linear-gradient(135deg, var(--green-primary-dark), var(--green-dark)); }
+.btn-outline { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.02em; }
 .btn-outline.dark { color: var(--green-dark); border-color: var(--green-dark); }
 
 /* trust ribbon (signature) */
@@ -188,7 +187,7 @@ table.price td.price-cell { color: var(--green-dark); font-weight: 700; white-sp
 .branch-card { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 10px; }
 .branch-card .name { font-weight: 700; color: var(--ink); font-size: 0.92rem; }
 .branch-card .sub { font-size: 0.8rem; color: var(--ink-soft); }
-.branch-call { background: var(--green-dark); color: var(--white); border-radius: 999px; padding: 8px 14px; font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+.branch-call { background: linear-gradient(135deg, var(--green-primary), var(--green-dark)); color: var(--white); border-radius: 999px; padding: 8px 14px; font-size: 0.8rem; font-weight: 700; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.02em; }
 
 /* contact cards */
 .contact-card { display: flex; align-items: center; gap: 14px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 12px; }
@@ -239,22 +238,100 @@ table.price td.price-cell { color: var(--green-dark); font-weight: 700; white-sp
 footer { background: var(--green-dark); color: #CFE3C9; padding: 26px 20px 20px; font-size: 0.82rem; text-align: center; }
 footer .brand-line { font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--white); margin-bottom: 6px; }
 
-/* sticky mobile tab bar */
-.tab-bar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; background: var(--white); border-top: 1px solid var(--line); box-shadow: 0 -4px 16px rgba(76,115,0,0.12); z-index: 30; padding-bottom: env(safe-area-inset-bottom, 0); }
-.tab-bar a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 4px 8px; font-size: 0.66rem; font-weight: 600; color: var(--ink-soft); }
-.tab-bar a .tab-icon { font-size: 1.15rem; line-height: 1; }
-.tab-bar a.active { color: var(--green-dark); }
-.tab-bar a.active .tab-icon { color: var(--green-primary); }
+/* hamburger menu button (mobile navigation trigger, top right of header) */
+.menu-toggle {
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; margin-left: auto;
+  border: none; background: transparent; cursor: pointer; padding: 0;
+}
+.menu-toggle .bar {
+  display: block; width: 22px; height: 2px; margin: 3px auto;
+  background: var(--green-dark); border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+.menu-toggle[aria-expanded="true"] .bar:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
+.menu-toggle[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
 
 @media (min-width: 640px) {
-  body { padding-bottom: 0; }
-  .tab-bar { display: none; }
   .site-header { justify-content: center; }
   .site-header .wrap-inner { max-width: var(--max); justify-content: space-between; }
-  .top-nav { display: flex; }
-  .top-nav a { font-family: 'Inter'; font-weight: 600; font-size: 0.88rem; color: var(--ink); margin-left: 22px; }
+  .menu-toggle { display: none; }
+  .top-nav { display: flex; position: static; box-shadow: none; border: none; padding: 0; background: none; }
+  .top-nav a { font-family: 'Inter'; font-weight: 600; font-size: 0.88rem; color: var(--ink); margin-left: 22px; padding: 0; border: none; }
   .top-nav a:first-child { margin-left: 0; }
   .top-nav a.active { color: var(--green-dark); border-bottom: 2px solid var(--green-primary); padding-bottom: 4px; }
 }
-@media (max-width: 639px) { .top-nav { display: none; } }
+
+@media (max-width: 639px) {
+  /* Nav collapses into a dropdown panel triggered by the hamburger button */
+  .top-nav {
+    display: none;
+    position: absolute; top: calc(100% + 14px); left: -20px; right: -20px;
+    background: var(--white); border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow); flex-direction: column;
+    padding: 6px 20px 10px; z-index: 25;
+  }
+  .top-nav.nav-open { display: flex; }
+  .top-nav a { padding: 12px 0; border-bottom: 1px solid var(--line); font-weight: 600; margin-left: 0; }
+  .top-nav a:last-child { border-bottom: none; }
+  .top-nav a.active { color: var(--green-dark); }
+}
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* =========================================================
+   Admin panel look — pill buttons, gradient primary action,
+   rounded cards and inputs, uppercase bold labels (same
+   pattern used above for .btn / .branch-call), scoped to the
+   admin-only classes used in eagle-portal-7719.html.
+   ========================================================= */
+.admin-card { border-radius: 20px; }
+.field input, .field select, .field textarea { border-radius: 14px; }
+.notice-box {
+  background: var(--green-light); border-radius: 16px; padding: 18px 20px;
+  margin: 16px 0; font-size: 0.9rem; color: var(--ink); line-height: 1.5;
+}
+.admin-tab {
+  border-radius: 999px !important;
+  border: 2px solid var(--green-dark) !important;
+  background: #fff !important;
+  color: var(--green-dark) !important;
+  text-transform: uppercase;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em;
+}
+.admin-tab.active {
+  background: linear-gradient(135deg, var(--green-primary), var(--green-dark)) !important;
+  color: #fff !important;
+  border-color: var(--green-dark) !important;
+}
+#saveProductBtn, #saveTeamBtn, #saveCustBtn, #saveTemplatesBtn,
+#saveTestiBtn, #savePartnerBtn, #gateContinueBtn, #loginSubmitBtn {
+  background: linear-gradient(135deg, var(--green-primary), var(--green-dark)) !important;
+  border: none !important;
+  border-radius: 999px !important;
+  color: #fff !important;
+  text-transform: uppercase;
+  font-weight: 800 !important;
+  letter-spacing: 0.03em;
+  padding: 14px 22px !important;
+}
+#cancelEditBtn, #cancelTeamEditBtn, #cancelCustEditBtn,
+#cancelTestiEditBtn, #cancelPartnerEditBtn, #exportCsvBtn {
+  border-radius: 999px !important;
+  border: 2px solid var(--green-dark) !important;
+  color: var(--green-dark) !important;
+  background: #fff !important;
+  text-transform: uppercase;
+  font-weight: 800 !important;
+}
+.logout-link {
+  display: inline-block; border: 2px solid var(--green-dark); border-radius: 999px;
+  padding: 10px 20px; color: var(--green-dark); text-decoration: none;
+  text-transform: uppercase; font-weight: 800; font-size: 0.78rem;
+}
+.upload-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.upload-row input[type=file] { font-size: 0.82rem; max-width: 100%; }
+.upload-status { font-size: 0.76rem; color: var(--ink-soft); }
+.upload-status.err { color: #B33A3A; }
+.upload-status.ok { color: var(--green-dark); }
