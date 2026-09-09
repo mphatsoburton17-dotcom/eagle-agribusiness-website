@@ -41,6 +41,9 @@
       <img src="images/logo.png" class="logo" alt="Eagle Agribusiness logo">
       <span class="brand">Eagle Agribusiness<small>&amp; Extension Services</small></span>
     </a>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Menu" aria-expanded="false">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
     <nav class="top-nav">
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
@@ -93,8 +96,8 @@
       <span class="eyebrow">Prefer to call?</span>
       <h2>We're one call away too</h2>
       <div class="btn-row">
-        <a class="btn btn-primary pulse" href="https://wa.me/265998893893" target="_blank" rel="noopener">💬 Message us on WhatsApp</a>
-        <a class="btn btn-outline dark" href="tel:+265998893893">📞 Call 0998 89 38 93</a>
+        <a class="btn btn-primary pulse" href="https://wa.me/265998893893" target="_blank" rel="noopener">Message us on WhatsApp</a>
+        <a class="btn btn-outline dark" href="tel:+265998893893">Call 0998 89 38 93</a>
       </div>
       <div class="trust-ribbon reveal">MUSADZATI SITINAKUUZENI — buy only through our official numbers.</div>
     </div>
@@ -106,14 +109,6 @@
   <div>Your Trusted Partner in Agricultural Products</div>
   <div style="margin-top:10px;">0998 89 38 93 · eagleinvestment23@gmail.com · Lilongwe, Malawi</div>
 </footer>
-
-<nav class="tab-bar">
-  <a href="index.html"><span class="tab-icon">🏠</span>Home</a>
-  <a href="about.html"><span class="tab-icon">ℹ️</span>About</a>
-  <a href="products.html" class="active"><span class="tab-icon">🌾</span>Products</a>
-  <a href="branches.html"><span class="tab-icon">📍</span>Branches</a>
-  <a href="contact.html"><span class="tab-icon">☎️</span>Contact</a>
-</nav>
 
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" onerror="window.EAGLE_SDK_FAILED = true;"></script>
@@ -163,7 +158,7 @@ function render(products) {
             <div class="pc-text">
               <div class="pc-name">${escapeHtml(p.name)}</div>
               ${p.description ? `<div class="pc-desc">${escapeHtml(p.description)}</div>` : ''}
-              <div class="pc-buy">Tap to order on WhatsApp →</div>
+              <div class="pc-buy">Tap to order on WhatsApp &rarr;</div>
             </div>
           </div>
           <div class="pc-price">${escapeHtml(p.price_label)}</div>
